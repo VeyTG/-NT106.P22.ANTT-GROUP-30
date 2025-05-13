@@ -1,0 +1,187 @@
+﻿<Window x:Class="ThuAo.FeedWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Virtual Pet" Height="500" Width="800">
+
+    <Window.Resources>
+        <!-- Style dùng chung cho các nút tròn -->
+        <Style x:Key="CircleButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="30">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFE3F2FD"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF90CAF9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style cho các nút nhỏ (âm thanh, cài đặt) -->
+        <Style x:Key="SmallButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFBBDEFB"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF64B5F6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!-- Nền -->
+        <Image Source="Assets/Kitchen.png" Stretch="Fill" />
+
+        <!-- Nút Cài đặt và Âm thanh -->
+        <StackPanel Orientation="Vertical"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Margin="0,20,20,0">
+
+
+            <!-- Nút Âm thanh -->
+            <Button x:Name="SoundButton"
+                    Style="{StaticResource SmallButtonStyle}"
+                    Background="#FF90CAF9" BorderBrush="#F2507C"
+                    ToolTip="Bật/Tắt âm thanh" Click="SoundButton_Click"
+                    Content="🔊" />
+
+            <!-- Nút Cài đặt -->
+            <Button Style="{StaticResource SmallButtonStyle}"
+                    Background="#FFE0E0E0" BorderBrush="#F2507C"
+                    ToolTip="Cài đặt" Click="SettingsButton_Click"
+                    Content="⚙️" />
+
+            <!-- Nút menu 3 gạch -->
+            <Button x:Name="MenuButton"
+             Style="{StaticResource SmallButtonStyle}"
+             Content="☰"
+             Background="#FFE0E0E0" BorderBrush="#F2507C"
+             ToolTip="Menu"
+             Click="MenuButton_Click"/>
+
+
+            <!-- Popup Menu -->
+            <Popup x:Name="MenuPopup" PlacementTarget="{Binding ElementName=MenuButton}"
+Placement="Bottom" StaysOpen="False"
+AllowsTransparency="True" PopupAnimation="Fade">
+                <Border Background="#7c5760" BorderBrush="#f9b8c3" BorderThickness="1" CornerRadius="5" Padding="5">
+                    <StackPanel>
+                        <Button Content="🏠 Trang chủ"
+             Margin="5"
+             Padding="10,5"
+             Click="HomeMenu_Click"
+             Background="#7c5760" BorderBrush="#f9b8c3"
+             HorizontalAlignment="Stretch"/>
+                        <Button Content="❌ Thoát ứng dụng"
+             Margin="5"
+             Padding="10,5"
+             Click="ExitMenu_Click"
+             Background="#7c5760" BorderBrush="#f9b8c3"
+             HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </Border>
+            </Popup>
+
+        </StackPanel>
+
+        <!-- Các thanh trạng thái -->
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Margin="0,20,0,0"
+                    Height="70">
+
+            <!-- Thức ăn -->
+            <StackPanel Margin="10,0" Width="200">
+                <TextBlock Text="🍖 " FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,2"/>
+                <Border Background="White" BorderBrush="#FFB71C1C" BorderThickness="2" CornerRadius="10" Padding="2">
+                    <ProgressBar x:Name="FoodBar" Height="20" Maximum="100" Value="100"
+                                 Foreground="#FFEF5350" Background="#FFFCE4EC"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Ngủ -->
+            <StackPanel Margin="10,0" Width="200">
+                <TextBlock Text="😴 " FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,2"/>
+                <Border Background="White" BorderBrush="#FF1565C0" BorderThickness="2" CornerRadius="10" Padding="2">
+                    <ProgressBar x:Name="SleepBar" Height="20" Maximum="100" Value="100"
+                                 Foreground="#FF42A5F5" Background="#FFE3F2FD"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Học bài -->
+            <StackPanel Margin="10,0" Width="200">
+                <TextBlock Text="📘" FontSize="22" FontWeight="Bold" Foreground="white" Margin="0,0,0,2"/>
+                <Border Background="White" BorderBrush="#FF2E7D32" BorderThickness="2" CornerRadius="10" Padding="2">
+                    <ProgressBar x:Name="StudyBar" Height="20" Maximum="100" Value="100"
+                                 Foreground="#FF66BB6A" Background="#FFE8F5E9"/>
+                </Border>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Hiệu ứng bánh -->
+        <Image x:Name="FoodImage" Source="Assets/food.png" Width="50" Height="50"
+               HorizontalAlignment="Right" VerticalAlignment="Bottom"
+               Margin="300,125" Visibility="Collapsed"/>
+
+
+
+        <!-- Các nút hành động -->
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Margin="20,0,0,20">
+
+            <!-- Cho ăn -->
+            <Button Style="{StaticResource CircleButtonStyle}" 
+                    Background="#FFEF5350" BorderBrush="#FFB71C1C"
+                    ToolTip="Cho ăn" Click="FeedButton_Click" Content="🍗"/>
+
+            <!-- Ngủ -->
+            <Button Style="{StaticResource CircleButtonStyle}" 
+                    Background="#FF42A5F5" BorderBrush="#FF1565C0"
+                    ToolTip="Ngủ" Click="SleepButton_Click" Content="🛏️"/>
+
+            <!-- Học bài -->
+            <Button Style="{StaticResource CircleButtonStyle}" 
+                    Background="#FF66BB6A" BorderBrush="#FF2E7D32"
+                    ToolTip="Học bài" Click="StudyButton_Click" Content="📘"/>
+        </StackPanel>
+    </Grid>
+</Window>

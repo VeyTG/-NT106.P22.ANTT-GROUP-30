@@ -1,0 +1,107 @@
+﻿<Window x:Class="ThuAo.SignUp"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Sign Up" Height="600" Width="720"
+        WindowStartupLocation="CenterScreen"
+        Background="#FFF8F1F1"
+        ResizeMode="NoResize">
+
+    <Window.Resources>
+        <!-- Hiệu ứng đổ bóng -->
+        <DropShadowEffect x:Key="DropShadowEffect"
+                          Color="Black"
+                          Direction="320"
+                          ShadowDepth="10"
+                          Opacity="0.5"
+                          BlurRadius="10"/>
+
+        <!-- Style cho nút SIGN UP -->
+        <Style x:Key="SignUpButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background" Value="#6A4A4A"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="20" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#845C5C"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#4A2E2E"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style cho liên kết "Login" -->
+        <Style x:Key="LinkTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#6A4A4A"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#8B5E5E"/>
+                    <Setter Property="TextDecorations" Value="Underline"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Border Background="#FFEEDDE1" CornerRadius="30"
+                Margin="20" Padding="22"
+                Effect="{DynamicResource DropShadowEffect}">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                <!-- Title -->
+                <TextBlock Text="Sign Up" FontSize="28" FontWeight="Bold"
+                           HorizontalAlignment="Center" Foreground="#6A4A4A"/>
+                <Rectangle Height="2" Width="60" Fill="#6A4A4A"
+                           Margin="0,5,0,20" HorizontalAlignment="Center"/>
+
+                <!-- Username -->
+                <TextBlock Text="Username" FontSize="14" FontWeight="SemiBold"
+                           Foreground="#6A4A4A"/>
+                <TextBox x:Name="UsernameTextBox" Margin="0,5,0,15" Height="28"
+                         BorderBrush="#CCC" BorderThickness="0,0,0,1" Background="Transparent"/>
+
+                <!-- Email -->
+                <TextBlock Text="Email" FontSize="14" FontWeight="SemiBold"
+                           Foreground="#6A4A4A"/>
+                <TextBox x:Name="EmailTextBox" Margin="0,5,0,15" Height="28"
+                         BorderBrush="#CCC" BorderThickness="0,0,0,1" Background="Transparent"/>
+
+                <!-- Password -->
+                <TextBlock Text="Password" FontSize="14" FontWeight="SemiBold"
+                           Foreground="#6A4A4A"/>
+                <PasswordBox x:Name="PasswordBox" Margin="0,5,0,25" Height="28"
+                             BorderBrush="#CCC" BorderThickness="0,0,0,1" Background="Transparent"/>
+
+                <!-- Sign Up Button -->
+                <Button Content="SIGN UP"
+                        Style="{StaticResource SignUpButtonStyle}"
+                        Margin="0,0,0,20"
+                        Click="RegisterButton_Click"/>
+
+                <!-- Link: Already have account -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Already have an account? " Foreground="#6A4A4A"/>
+                    <TextBlock Text="Login"
+                               Style="{StaticResource LinkTextStyle}"
+                               MouseDown="LoginLink_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
