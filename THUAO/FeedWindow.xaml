@@ -65,123 +65,156 @@
 
     <Grid>
         <!-- Nền -->
-        <Image Source="Assets/Kitchen.png" Stretch="Fill" />
+        <Image Source="Assets/feed.png" Stretch="Fill" />
 
         <!-- Nút Cài đặt và Âm thanh -->
         <StackPanel Orientation="Vertical"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Margin="0,20,20,0">
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="0,32,10,0">
 
 
             <!-- Nút Âm thanh -->
-            <Button x:Name="SoundButton"
-                    Style="{StaticResource SmallButtonStyle}"
-                    Background="#FF90CAF9" BorderBrush="#F2507C"
-                    ToolTip="Bật/Tắt âm thanh" Click="SoundButton_Click"
-                    Content="🔊" />
+            <Image Source="Assets/Button/setting/am_thanh.png"
+         Width="60" Height="60" Margin="5"
+         MouseLeftButtonUp="SoundImage_MouseLeftButtonUp"
+         ToolTip="Bật/Tắt âm thanh" Cursor="Hand">
+                <Image.Clip>
+                    <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
+                </Image.Clip>
+            </Image>
 
             <!-- Nút Cài đặt -->
-            <Button Style="{StaticResource SmallButtonStyle}"
-                    Background="#FFE0E0E0" BorderBrush="#F2507C"
-                    ToolTip="Cài đặt" Click="SettingsButton_Click"
-                    Content="⚙️" />
+            <Image Source="Assets/Button/setting/setting.png"
+       Width="60" Height="60" Margin="5"
+       MouseLeftButtonUp="SettingsImage_MouseLeftButtonUp"
+       ToolTip="Cài đặt" Cursor="Hand">
+                <Image.Clip>
+                    <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
+                </Image.Clip>
+            </Image>
 
             <!-- Nút menu 3 gạch -->
-            <Button x:Name="MenuButton"
-             Style="{StaticResource SmallButtonStyle}"
-             Content="☰"
-             Background="#FFE0E0E0" BorderBrush="#F2507C"
-             ToolTip="Menu"
-             Click="MenuButton_Click"/>
-
-
-            <!-- Popup Menu -->
-            <Popup x:Name="MenuPopup" PlacementTarget="{Binding ElementName=MenuButton}"
-Placement="Bottom" StaysOpen="False"
-AllowsTransparency="True" PopupAnimation="Fade">
-                <Border Background="#7c5760" BorderBrush="#f9b8c3" BorderThickness="1" CornerRadius="5" Padding="5">
-                    <StackPanel>
-                        <Button Content="🏠 Trang chủ"
-             Margin="5"
-             Padding="10,5"
-             Click="HomeMenu_Click"
-             Background="#7c5760" BorderBrush="#f9b8c3"
-             HorizontalAlignment="Stretch"/>
-                        <Button Content="❌ Thoát ứng dụng"
-             Margin="5"
-             Padding="10,5"
-             Click="ExitMenu_Click"
-             Background="#7c5760" BorderBrush="#f9b8c3"
-             HorizontalAlignment="Stretch"/>
-                    </StackPanel>
-                </Border>
-            </Popup>
-
+            <Image Source="Assets/Button/setting/more.png"
+       Width="60" Height="60" Margin="5"
+       MouseLeftButtonUp="MenuImage_MouseLeftButtonUp"
+       ToolTip="Menu" Cursor="Hand">
+                <Image.Clip>
+                    <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
+                </Image.Clip>
+            </Image>
         </StackPanel>
 
         <!-- Các thanh trạng thái -->
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    Margin="0,20,0,0"
-                    Height="70">
-
-            <!-- Thức ăn -->
-            <StackPanel Margin="10,0" Width="200">
-                <TextBlock Text="🍖 " FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,2"/>
-                <Border Background="White" BorderBrush="#FFB71C1C" BorderThickness="2" CornerRadius="10" Padding="2">
-                    <ProgressBar x:Name="FoodBar" Height="20" Maximum="100" Value="100"
-                                 Foreground="#FFEF5350" Background="#FFFCE4EC"/>
-                </Border>
-            </StackPanel>
+        <Grid Margin="0,0,0,414" Height="70" HorizontalAlignment="Center" Width="720">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="106*"/>
+                <ColumnDefinition Width="117*"/>
+                <!-- Cột giữa rộng hơn -->
+                <ColumnDefinition Width="137*"/>
+            </Grid.ColumnDefinitions>
 
             <!-- Ngủ -->
-            <StackPanel Margin="10,0" Width="200">
-                <TextBlock Text="😴 " FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,2"/>
-                <Border Background="White" BorderBrush="#FF1565C0" BorderThickness="2" CornerRadius="10" Padding="2">
-                    <ProgressBar x:Name="SleepBar" Height="20" Maximum="100" Value="100"
-                                 Foreground="#FF42A5F5" Background="#FFE3F2FD"/>
-                </Border>
+            <StackPanel Margin="0,20,0,0" Width="250" HorizontalAlignment="Center">
+                <Grid Width="210" Height="40" Margin="10,0">
+                    <Image Source="Assets/Button/ngu/bg.png" Stretch="Fill" Margin="-10,0,10,0"/>
+                    <Border Width="190" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        CornerRadius="10" ClipToBounds="True" RenderTransformOrigin="0.573,0.52">
+                        <Image x:Name="HealthFill2"
+                                Source="Assets/Button/ngu/blood-03.png"
+                                Stretch="Fill" Margin="22,0,10,0" RenderTransformOrigin="0.519,0.522"/>
+                    </Border>
+                </Grid>
+            </StackPanel>
+
+            <!-- Thức ăn -->
+            <StackPanel Grid.Column="1" Margin="0,20,0,0" Width="250" HorizontalAlignment="Center">
+                <Grid Width="210" Height="40" Margin="10,0">
+                    <Image Source="Assets/Button/thuc_an/bg.png" Stretch="Fill" HorizontalAlignment="Left" Width="210" Margin="-10,0,0,0"/>
+                    <Border Width="190" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                     CornerRadius="10" ClipToBounds="True" RenderTransformOrigin="0.573,0.52">
+                        <Image x:Name="HealthFill1"
+                                Source="Assets/Button/thuc_an/blood.png"
+                                Stretch="Fill" Margin="22,0,10,0" RenderTransformOrigin="0.519,0.522"/>
+                    </Border>
+                </Grid>
             </StackPanel>
 
             <!-- Học bài -->
-            <StackPanel Margin="10,0" Width="200">
-                <TextBlock Text="📘" FontSize="22" FontWeight="Bold" Foreground="white" Margin="0,0,0,2"/>
-                <Border Background="White" BorderBrush="#FF2E7D32" BorderThickness="2" CornerRadius="10" Padding="2">
-                    <ProgressBar x:Name="StudyBar" Height="20" Maximum="100" Value="100"
-                                 Foreground="#FF66BB6A" Background="#FFE8F5E9"/>
-                </Border>
+            <StackPanel Grid.Column="2" Margin="0,20,0,0" Width="250" HorizontalAlignment="Center">
+                <Grid Width="210" Height="40" Margin="10,0">
+                    <Image Source="Assets/Button/hoc_bai/bg-02.png" Stretch="Fill" HorizontalAlignment="Left" Width="210" Margin="-10,0,0,0"/>
+                    <Border Width="190" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                     CornerRadius="10" ClipToBounds="True" RenderTransformOrigin="0.573,0.52">
+                        <Image x:Name="HealthFill3"
+                        Source="Assets/Button/hoc_bai/blood-03.png"
+                        Stretch="Fill" Margin="22,0,10,0" RenderTransformOrigin="0.519,0.522"/>
+                    </Border>
+                </Grid>
             </StackPanel>
-        </StackPanel>
+        </Grid>
 
         <!-- Hiệu ứng bánh -->
         <Image x:Name="FoodImage" Source="Assets/food.png" Width="50" Height="50"
                HorizontalAlignment="Right" VerticalAlignment="Bottom"
                Margin="300,125" Visibility="Collapsed"/>
 
-
-
-        <!-- Các nút hành động -->
+        <!-- Nút chuyển hướng -->
         <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Margin="20,0,0,20">
+         HorizontalAlignment="Left"
+         VerticalAlignment="Bottom"
+         Margin="10,0,0,0" Height="80" Width="96">
+            <Image Source="Assets/Button/setting/left.png"
+             Width="70" Height="70"
+             MouseLeftButtonUp="ArrowImage_MouseLeftButtonUp"
+             ToolTip="Nút mũi tên"
+             Cursor="Hand" />
 
-            <!-- Cho ăn -->
-            <Button Style="{StaticResource CircleButtonStyle}" 
-                    Background="#FFEF5350" BorderBrush="#FFB71C1C"
-                    ToolTip="Cho ăn" Click="FeedButton_Click" Content="🍗"/>
-
-            <!-- Ngủ -->
-            <Button Style="{StaticResource CircleButtonStyle}" 
-                    Background="#FF42A5F5" BorderBrush="#FF1565C0"
-                    ToolTip="Ngủ" Click="SleepButton_Click" Content="🛏️"/>
-
-            <!-- Học bài -->
-            <Button Style="{StaticResource CircleButtonStyle}" 
-                    Background="#FF66BB6A" BorderBrush="#FF2E7D32"
-                    ToolTip="Học bài" Click="StudyButton_Click" Content="📘"/>
         </StackPanel>
+
+        <!-- Món ăn + giá tiền -->
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top"
+                    Margin="0,269,0,0"
+                    MouseLeftButtonUp="Food_Click"
+                    Cursor="Hand">
+            <Image x:Name="FoodImage1"
+                   Source="Assets/Button/Food/donut.png"
+                   Width="100" Height="100"
+                   />
+            <TextBlock x:Name="FoodPrice"
+                       Text="10 xu"
+                       FontSize="25" FontWeight="Bold"
+                       TextAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Nút chuyển hướng -->
+        <StackPanel Orientation="Horizontal"
+         HorizontalAlignment="Left"
+         VerticalAlignment="Bottom"
+         Margin="274,0,0,82" Height="80" Width="176">
+            <!-- Quay lại -->
+            <Image Source="Assets/Button/setting/left.png"
+             Width="70" Height="70"
+             MouseLeftButtonUp="ArrowImage_MouseLeftButtonUp"
+             ToolTip="Nút mũi tên"
+             Cursor="Hand" />
+            <!-- Quay lại -->
+        </StackPanel>
+
+        <!-- Nút chuyển hướng -->
+        <StackPanel Orientation="Horizontal"
+         HorizontalAlignment="Left"
+         VerticalAlignment="Bottom"
+         Margin="455,0,0,82" Height="80" Width="176">
+            <!-- Tiến lên -->
+            <Image Source="Assets/Button/setting/right.png"
+             Width="70" Height="70"
+             MouseLeftButtonUp="ArrowImage_MouseLeftButtonUp"
+             ToolTip="Nút mũi tên"
+             Cursor="Hand" RenderTransformOrigin="-0.198,0.509" />
+        </StackPanel>
+
+
+
     </Grid>
 </Window>

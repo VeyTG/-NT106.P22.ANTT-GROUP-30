@@ -150,6 +150,9 @@
     <Compile Include="Bedroom.xaml.cs">
       <DependentUpon>Bedroom.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classroom.xaml.cs">
+      <DependentUpon>Classroom.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FeedWindow.xaml.cs">
       <DependentUpon>FeedWindow.xaml</DependentUpon>
     </Compile>
@@ -169,6 +172,10 @@
       <DependentUpon>Welcome.xaml</DependentUpon>
     </Compile>
     <Page Include="Bedroom.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Classroom.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -264,6 +271,29 @@
     <Content Include="Assets\backgroundmusic.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Assets\Button\food\meat.png" />
+    <Resource Include="Assets\Button\food\carrot.png" />
+    <Resource Include="Assets\Button\food\chese.png" />
+    <Resource Include="Assets\Button\food\strawberry.png" />
+    <Resource Include="Assets\Button\food\sandwich.png" />
+    <Resource Include="Assets\Button\food\donut.png" />
+    <Resource Include="Assets\feed.png" />
+    <Resource Include="Assets\classroom.png" />
+    <Resource Include="Assets\Button\setting\left.png" />
+    <Resource Include="Assets\Button\setting\right.png" />
+    <Resource Include="Assets\Button\setting\am_thanh.png" />
+    <Resource Include="Assets\Button\setting\more.png" />
+    <Resource Include="Assets\Button\setting\setting.png" />
+    <Resource Include="Assets\Button\hoc_bai\bg-02.png" />
+    <Resource Include="Assets\Button\hoc_bai\blood-03.png" />
+    <Resource Include="Assets\Button\hoc_bai\main.png" />
+    <Resource Include="Assets\Button\ngu\bg.png" />
+    <Resource Include="Assets\Button\ngu\blood-03.png" />
+    <Resource Include="Assets\Button\ngu\main.png" />
+    <Resource Include="Assets\Button\thuc_an\main.png" />
+    <Resource Include="Assets\Button\thuc_an\blood.png" />
+    <Resource Include="Assets\Button\thuc_an\bg.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
