@@ -70,6 +70,16 @@
     <Grid>
         <!-- Hình nền -->
         <Image Source="Assets/START.png" Stretch="Fill" />
+
+        <TextBlock Text="Welcome to Virtual Pet"
+           HorizontalAlignment="Left"
+           VerticalAlignment="Top"
+           Margin="214,113,0,0"
+           FontSize="36"
+           FontWeight="Bold"
+           Foreground="#F2507C"
+           TextWrapping="Wrap" Width="456"/>
+
         <!-- Nút Cài đặt và Âm thanh -->
         <StackPanel Orientation="Vertical"
             HorizontalAlignment="Right"
