@@ -48,7 +48,7 @@ namespace ThuAo
             };
 
             await _userService.CreateUser(newUser);
-            MessageBox.Show("Sign up successful!");
+            
 
             var loginWindow = new Login();
             loginWindow.Show();

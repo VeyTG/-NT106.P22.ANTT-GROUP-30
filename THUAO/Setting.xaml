@@ -1,0 +1,154 @@
+﻿<Window x:Class="ThuAo.Setting"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Virtual Pet" Height="500" Width="800">
+
+    <Window.Resources>
+        <!-- Hiệu ứng click thu phóng ảnh -->
+        <Storyboard x:Key="ImageClickEffect">
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                 To="0.85" Duration="0:0:0.05" AutoReverse="True"/>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                 To="0.85" Duration="0:0:0.05" AutoReverse="True"/>
+        </Storyboard>
+        <Storyboard x:Key="ClickEffectStoryboard">
+            <DoubleAnimation
+Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+To="1.2" Duration="0:0:0.1" AutoReverse="True"/>
+            <DoubleAnimation
+Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+To="1.2" Duration="0:0:0.1" AutoReverse="True"/>
+        </Storyboard>
+        <!-- Style dùng chung cho các nút tròn -->
+        <Style x:Key="CircleButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="30">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFE3F2FD"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF90CAF9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style cho các nút nhỏ (âm thanh, cài đặt) -->
+        <Style x:Key="SmallButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFBBDEFB"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF64B5F6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!-- Nền -->
+        <Image Source="/Assets/setting_bg.png" Stretch="Fill" />
+
+        <!-- Các nút chisnh -->
+        <StackPanel Orientation="Horizontal"
+         HorizontalAlignment="Center"
+         VerticalAlignment="Center">
+
+            <!-- music -->
+            <Image Source="/Assets/Button/setting/music.png"
+             Width="60" Height="60" Margin="10"
+             MouseLeftButtonUp="FeedImage_MouseLeftButtonUp"
+             ToolTip="Cho ăn" Cursor="Hand">
+                <Image.Clip>
+                    <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
+                </Image.Clip>
+            </Image>
+
+
+            <!-- inbox -->
+            <Image Source="/Assets/Button/setting/inbox.png"
+             Width="60" Height="60" Margin="10"
+             MouseLeftButtonUp="SleepImage_MouseLeftButtonUp"
+             ToolTip="Ngủ" Cursor="Hand">
+                <Image.Clip>
+                    <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
+                </Image.Clip>
+            </Image>
+        </StackPanel>
+
+        <!-- Các nút  -->
+        <StackPanel Orientation="Horizontal"
+         HorizontalAlignment="Center"
+         VerticalAlignment="Top"
+         Margin="0,242,0,0">
+
+            <!-- music -->
+            <Image Source="/Assets/Button/setting/sound.png"
+             Width="60" Height="90" Margin="10"
+             MouseLeftButtonUp="FeedImage_MouseLeftButtonUp"
+             ToolTip="Cho ăn" Cursor="Hand">
+                <Image.Clip>
+                    <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
+                </Image.Clip>
+            </Image>
+
+
+            <!-- inbox -->
+            <Image Source="/Assets/Button/setting/help.png"
+             Width="60" Height="60" Margin="10"
+             MouseLeftButtonUp="SleepImage_MouseLeftButtonUp"
+             ToolTip="Ngủ" Cursor="Hand">
+                <Image.Clip>
+                    <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
+                </Image.Clip>
+            </Image>
+            <!-- Nút menu 3 gạch -->
+            <Image Source="Assets/Button/setting/more.png"
+Width="60" Height="60" Margin="5"
+MouseLeftButtonUp="MenuImage_MouseLeftButtonUp"
+ToolTip="Menu" Cursor="Hand"  RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <ScaleTransform/>
+                </Image.RenderTransform>
+                <Image.Clip>
+                    <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
+                </Image.Clip>
+            </Image>
+        </StackPanel>
+
+
+    </Grid>
+</Window>

@@ -1,6 +1,11 @@
 ﻿using System.Windows;
 using ThuAo.Services;
 using ThuAo.Models;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Auth;
+using Google.Apis.Util.Store;
+using System.Threading;
+using System;
 
 namespace ThuAo
 {
@@ -45,6 +50,50 @@ namespace ThuAo
             }
         }
 
+        private async void GoogleLoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var clientSecrets = new ClientSecrets
+                {
+                    ClientId = "",
+                    ClientSecret = ""  
+                };
+
+                string[] scopes = new string[] { "openid", "email", "profile" };
+
+                var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    clientSecrets,
+                    scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore("GoogleToken", true)
+                );
+
+                if (credential.Token.IsStale)
+                {
+                    await credential.RefreshTokenAsync(CancellationToken.None);
+                }
+
+
+                var payload = await GoogleJsonWebSignature.ValidateAsync(credential.Token.IdToken);
+
+                // Dữ liệu trả về từ Google
+                Session.Username = payload.Name;
+                Session.Email = payload.Email;
+
+                MessageBox.Show($"Welcome, {payload.Name}!");
+
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Google login failed: " + ex.Message);
+            }
+        }
+
         private void CreateAccountLink_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var signUpWindow = new SignUp();
@@ -54,7 +103,14 @@ namespace ThuAo
 
         private void ForgotPasswordLink_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            MessageBox.Show("Password recovery is not yet implemented.");
+
+            var ForgotPassword = new ForgotPassword();
+            ForgotPassword.ShowDialog();
+
         }
+
     }
+
+
 }
+

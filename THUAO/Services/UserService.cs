@@ -13,6 +13,8 @@ namespace ThuAo.Services
             var client = new MongoClient("mongodb+srv://ThuAo:ThuAoLapTrinhMang25@cluster0.q11efhi.mongodb.net/");
             var database = client.GetDatabase("ThuAo"); // ✅ đúng tên database của bạn
             _users = database.GetCollection<User>("users"); // Tên collection là "users"
+           
+           
         }
 
         public async Task CreateUser(User user)
@@ -34,5 +36,23 @@ namespace ThuAo.Services
             var user = await _users.Find(filter).FirstOrDefaultAsync();
             return user;
         }
+        private readonly IMongoDatabase _database;
+
+        
+
+        public async Task<User> FindByEmail(string email)
+        {
+            var collection = _database.GetCollection<User>("Users");
+            return await collection.Find(u => u.Email == email).FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> UpdatePasswordByEmail(string email, string newPassword)
+        {
+            var collection = _database.GetCollection<User>("Users");
+            var update = Builders<User>.Update.Set(u => u.Password, newPassword);
+            var result = await collection.UpdateOneAsync(u => u.Email == email, update);
+            return result.ModifiedCount > 0;
+        }
+
     }
 }

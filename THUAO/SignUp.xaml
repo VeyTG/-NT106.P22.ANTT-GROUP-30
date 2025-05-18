@@ -65,13 +65,13 @@
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
 
                 <!-- Title -->
-                <TextBlock Text="Sign Up" FontSize="28" FontWeight="Bold"
+                <TextBlock Text="Đăng ký" FontSize="24" FontWeight="Bold"
                            HorizontalAlignment="Center" Foreground="#6A4A4A"/>
                 <Rectangle Height="2" Width="60" Fill="#6A4A4A"
                            Margin="0,5,0,20" HorizontalAlignment="Center"/>
 
                 <!-- Username -->
-                <TextBlock Text="Username" FontSize="14" FontWeight="SemiBold"
+                <TextBlock Text="Tên đăng nhập" FontSize="14" FontWeight="SemiBold"
                            Foreground="#6A4A4A"/>
                 <TextBox x:Name="UsernameTextBox" Margin="0,5,0,15" Height="28"
                          BorderBrush="#CCC" BorderThickness="0,0,0,1" Background="Transparent"/>
@@ -83,21 +83,21 @@
                          BorderBrush="#CCC" BorderThickness="0,0,0,1" Background="Transparent"/>
 
                 <!-- Password -->
-                <TextBlock Text="Password" FontSize="14" FontWeight="SemiBold"
+                <TextBlock Text="Mật khẩu" FontSize="14" FontWeight="SemiBold"
                            Foreground="#6A4A4A"/>
                 <PasswordBox x:Name="PasswordBox" Margin="0,5,0,25" Height="28"
                              BorderBrush="#CCC" BorderThickness="0,0,0,1" Background="Transparent"/>
 
                 <!-- Sign Up Button -->
-                <Button Content="SIGN UP"
+                <Button Content="Đăng kí"
                         Style="{StaticResource SignUpButtonStyle}"
                         Margin="0,0,0,20"
                         Click="RegisterButton_Click"/>
 
                 <!-- Link: Already have account -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Text="Already have an account? " Foreground="#6A4A4A"/>
-                    <TextBlock Text="Login"
+                    <TextBlock Text="Bạn đã có tài khoản? " Foreground="#6A4A4A"/>
+                    <TextBlock Text="Đăng nhập"
                                Style="{StaticResource LinkTextStyle}"
                                MouseDown="LoginLink_Click"/>
                 </StackPanel>

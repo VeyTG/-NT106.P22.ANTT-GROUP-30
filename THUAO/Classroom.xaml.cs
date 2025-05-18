@@ -7,7 +7,6 @@ using System.Windows.Threading;
 using System.Windows.Controls;
 using System.Windows.Media;
 using ThuAo.Models;
-using System.Windows.Controls;
 using System.Windows.Media.Animation;
 
 namespace ThuAo
@@ -262,7 +261,7 @@ namespace ThuAo
             }
             else
             {
-                image.Source = new BitmapImage(new Uri("Assets/Button/setting/am_thanh.png", UriKind.Relative));
+                image.Source = new BitmapImage(new Uri("Assets/Button/setting/tat_am.png", UriKind.Relative));
                 image.ToolTip = "Bật âm thanh";
                 App.SetMusicVolume(0.0);
             }
@@ -271,6 +270,9 @@ namespace ThuAo
         private void SettingsImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             AnimateClickEffect(sender as UIElement);
+            Setting Setting = new Setting();
+            Setting.Show();
+            this.Close();
         }
 
         private void MenuImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
