@@ -4,6 +4,21 @@
         Title="Virtual Pet" Height="500" Width="800">
 
     <Window.Resources>
+        <!-- Hiệu ứng click thu phóng ảnh -->
+        <Storyboard x:Key="ImageClickEffect">
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                 To="0.85" Duration="0:0:0.05" AutoReverse="True"/>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                 To="0.85" Duration="0:0:0.05" AutoReverse="True"/>
+        </Storyboard>
+        <Storyboard x:Key="ClickEffectStoryboard">
+            <DoubleAnimation
+Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+To="1.2" Duration="0:0:0.1" AutoReverse="True"/>
+            <DoubleAnimation
+Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+To="1.2" Duration="0:0:0.1" AutoReverse="True"/>
+        </Storyboard>
         <!-- Style dùng chung cho các nút tròn -->
         <Style x:Key="CircleButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="60"/>
@@ -78,7 +93,10 @@
             <Image Source="Assets/Button/setting/am_thanh.png"
            Width="60" Height="60" Margin="5"
            MouseLeftButtonUp="SoundImage_MouseLeftButtonUp"
-           ToolTip="Bật/Tắt âm thanh" Cursor="Hand">
+           ToolTip="Bật/Tắt âm thanh" Cursor="Hand"  RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <ScaleTransform/>
+                </Image.RenderTransform>
                 <Image.Clip>
                     <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
                 </Image.Clip>
@@ -88,7 +106,10 @@
             <Image Source="Assets/Button/setting/setting.png"
            Width="60" Height="60" Margin="5"
            MouseLeftButtonUp="SettingsImage_MouseLeftButtonUp"
-           ToolTip="Cài đặt" Cursor="Hand">
+           ToolTip="Cài đặt" Cursor="Hand"  RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <ScaleTransform/>
+                </Image.RenderTransform>
                 <Image.Clip>
                     <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
                 </Image.Clip>
@@ -98,7 +119,10 @@
             <Image Source="Assets/Button/setting/more.png"
            Width="60" Height="60" Margin="5"
            MouseLeftButtonUp="MenuImage_MouseLeftButtonUp"
-           ToolTip="Menu" Cursor="Hand">
+           ToolTip="Menu" Cursor="Hand"  RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <ScaleTransform/>
+                </Image.RenderTransform>
                 <Image.Clip>
                     <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
                 </Image.Clip>

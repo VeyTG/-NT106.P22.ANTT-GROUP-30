@@ -159,6 +159,7 @@
     <Compile Include="Message_Box.xaml.cs">
       <DependentUpon>Message_Box.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Question.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="PlayWindow.xaml.cs">
       <DependentUpon>PlayWindow.xaml</DependentUpon>

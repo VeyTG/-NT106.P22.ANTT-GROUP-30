@@ -1,144 +1,222 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using System.Windows.Controls;
+using System.Windows.Media.Animation;
+using System.Windows.Media;
 
 namespace ThuAo
 {
     public partial class Bedroom : Window
     {
-        private DispatcherTimer statusTimer;
-        private double foodLevel = 100;
-        private double sleepLevel = 100;
-        private double studyLevel = 100;
+       
+        // Thanh năng lượng ăn, ngủ, học
+        private double foodEnergy = 75;
+        private double sleepEnergy = 75;
+        private double studyEnergy = 75;
+
+        private const double MaxEnergy = 100;
+
+        private DispatcherTimer energyTimer;
+        private DispatcherTimer sleepDelayTimer;        
+        private DispatcherTimer sleepIncreaseTimer;
+
 
         public Bedroom()
         {
             InitializeComponent();
-            StartStatusTimer();
-        }
+            UpdateFoodEnergyVisual();
+            UpdateSleepEnergyVisual();
+            UpdateStudyEnergyVisual();
 
-        // Bắt đầu giảm dần các thanh trạng thái theo thời gian
-        private void StartStatusTimer()
+            // Khởi tạo timer giảm năng lượng
+            energyTimer = new DispatcherTimer();
+            energyTimer.Interval = TimeSpan.FromSeconds(15);
+            energyTimer.Tick += EnergyTimer_Tick;
+            energyTimer.Start();
+
+        }
+           private void StartSleepDelay()
         {
-            statusTimer = new DispatcherTimer();
-            statusTimer.Interval = TimeSpan.FromSeconds(10); // Giảm dần mỗi 45s
-            statusTimer.Tick += (s, e) =>
+            // Nếu có timer cũ thì dừng lại
+            sleepDelayTimer?.Stop();
+            sleepDelayTimer = new DispatcherTimer();
+            sleepDelayTimer.Interval = TimeSpan.FromSeconds(10); // đợi 40s
+
+            sleepDelayTimer.Tick += (s, e) =>
             {
-                foodLevel = Math.Max(0, foodLevel - 1);  // Giảm 1% thức ăn mỗi phút
-                sleepLevel = Math.Max(0, sleepLevel - 0.5); // Giảm 0.5% giấc ngủ mỗi phút
-                studyLevel = Math.Max(0, studyLevel - 0.2); // Giảm 0.2% học bài mỗi phút
-
-                FoodBar.Value = foodLevel;
-                SleepBar.Value = sleepLevel;
-                StudyBar.Value = studyLevel;
-
-                // Cảnh báo nếu bất kỳ thanh trạng thái nào dưới 10%
-                if (foodLevel < 10 || sleepLevel < 10 || studyLevel < 10)
-                {
-                    MessageBox.Show("⚠️ Thú cưng đang cần chăm sóc, hãy giúp nó!");
-                }
+                sleepDelayTimer.Stop();
+                StartIncreasingSleepEnergy();  // sau 40s thì bắt đầu tăng năng lượng
             };
-            statusTimer.Start();
+
+            sleepDelayTimer.Start();
+        }
+
+        // Tăng dần năng lượng sau 40s delay
+        private void StartIncreasingSleepEnergy()
+        {
+            sleepIncreaseTimer?.Stop();
+            sleepIncreaseTimer = new DispatcherTimer();
+            sleepIncreaseTimer.Interval = TimeSpan.FromSeconds(1);
+
+            sleepIncreaseTimer.Tick += (s, e) =>
+            {
+                if (sleepEnergy >= MaxEnergy)
+                {
+                    sleepIncreaseTimer.Stop();
+                    return;
+                }
+
+                sleepEnergy += 1;  // tăng mỗi giây
+                if (sleepEnergy > MaxEnergy) sleepEnergy = MaxEnergy;
+
+                UpdateSleepEnergyVisual();
+            };
+
+            sleepIncreaseTimer.Start();
         }
 
 
-        // Khi người dùng nhấn nút "Cho ăn"
-        private async void FeedButton_Click(object sender, RoutedEventArgs e)
+        private void EnergyTimer_Tick(object sender, EventArgs e)
         {
+            // Giảm năng lượng mỗi 5 giây, không dưới 0
+            foodEnergy = Math.Max(0, foodEnergy - 1);
+            sleepEnergy = Math.Max(0, sleepEnergy - 0.5);
+            studyEnergy = Math.Max(0, studyEnergy - 0.3);
+
+            UpdateFoodEnergyVisual();
+            UpdateSleepEnergyVisual();
+            UpdateStudyEnergyVisual();
+        }
+
+       
+
+        
+       
+        // Tăng ngủ (ví dụ)
+        /*private void IncreaseSleepEnergy(double amount)
+        {
+            sleepEnergy += amount;
+            if (sleepEnergy > MaxEnergy) sleepEnergy = MaxEnergy;
+            UpdateSleepEnergyVisual();
+        }
+
+        // Tăng học (ví dụ)
+        private void IncreaseStudyEnergy(double amount)
+        {
+            studyEnergy += amount;
+            if (studyEnergy > MaxEnergy) studyEnergy = MaxEnergy;
+            UpdateStudyEnergyVisual();
+        }*/
+
+        private void UpdateFoodEnergyVisual()
+        {
+            double maxWidth = 190;
+            double marginLeft = 22;
+            double marginRight = 10;
+            double totalWidth = maxWidth - marginLeft - marginRight;
+            double widthFill = totalWidth * (foodEnergy / MaxEnergy);
+
+            HealthFill1.Margin = new Thickness(marginLeft, 0, marginRight + (totalWidth - widthFill), 0);
+        }
+
+         private void UpdateSleepEnergyVisual()
+         {
+             double maxWidth = 190;
+             double marginLeft = 22;
+             double marginRight = 10;
+             double totalWidth = maxWidth - marginLeft - marginRight;
+             double widthFill = totalWidth * (sleepEnergy / MaxEnergy);
+
+             HealthFill2.Margin = new Thickness(marginLeft, 0, marginRight + (totalWidth - widthFill), 0);
+         }
+
+        private void UpdateStudyEnergyVisual()
+         {
+             double maxWidth = 190;
+             double marginLeft = 22;
+             double marginRight = 10;
+             double totalWidth = maxWidth - marginLeft - marginRight;
+             double widthFill = totalWidth * (studyEnergy / MaxEnergy);
+
+             HealthFill3.Margin = new Thickness(marginLeft, 0, marginRight + (totalWidth - widthFill), 0);
+         }
+
+        private void AnimateClickEffect(UIElement element)
+        {
+            element.RenderTransform = new ScaleTransform(1.0, 1.0);
+            element.RenderTransformOrigin = new Point(0.5, 0.5);
+            Storyboard sb = (Storyboard)FindResource("ClickEffectStoryboard");
+            Storyboard clone = sb.Clone(); // Đảm bảo hiệu ứng chạy độc lập mỗi lần
+            Storyboard.SetTarget(clone, element);
+            clone.Begin();
+        }
+
+        private void FeedImage_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            AnimateClickEffect(sender as UIElement);
+            // Mở cửa sổ chơi mới
             FeedWindow FeedWindow = new FeedWindow();
             FeedWindow.Show();
             this.Close();
         }
 
-        // Khi người dùng nhấn nút "Ngủ"
-        private bool isSleeping = false;
-
-        private async void SleepButton_Click(object sender, RoutedEventArgs e)
+        // Ngủ
+        private void SleepImage_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (isSleeping)
-            {
-                MessageBox.Show("Thú cưng đang ngủ rồi!");
-                return;
-            }
-
-            isSleeping = true;
-            SleepButton.IsEnabled = false; // Tạm tắt nút để tránh click tiếp
-           
-
-            // Chờ 2 phút (120 giây)
-            await Task.Delay(TimeSpan.FromMinutes(2));
-
-            sleepLevel = Math.Min(100, sleepLevel + 20); // Tăng 20% sau khi đủ thời gian
-            SleepBar.Value = sleepLevel;
-
-            if (sleepLevel == 100)
-            {
-                MessageBox.Show("Thú cưng của bạn đã ngủ đủ giấc!");
-            }
-            else
-            {
-                MessageBox.Show("Thú cưng đã ngủ và hồi phục một phần năng lượng!");
-            }
-
-            SleepButton.IsEnabled = true;
-            isSleeping = false;
-            
+            StartSleepDelay();
         }
 
-        // Khi người dùng nhấn nút "Học bài"
-        private void StudyButton_Click(object sender, RoutedEventArgs e)
+        // Học bài
+        private void StudyImage_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            // Giả sử hiển thị một MessageBox. Bạn có thể tạo một SettingsWindow riêng sau.
-            MessageBox.Show("🔧 Cài đặt đang được phát triển...", "Cài đặt", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-        private bool isSoundOn = true;
-
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Giả sử hiển thị một MessageBox. Bạn có thể tạo một SettingsWindow riêng sau.
-            MessageBox.Show("🔧 Cài đặt đang được phát triển...", "Cài đặt", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        // Mở menu ☰
-        private void MenuButton_Click(object sender, RoutedEventArgs e)
-        {
-            MenuPopup.IsOpen = true;
-        }
-
-        // Chọn "Trang chủ"
-        private void HomeMenu_Click(object sender, RoutedEventArgs e)
-        {
-            PlayWindow PlayWindow = new PlayWindow();
-            PlayWindow.Show();
+            AnimateClickEffect(sender as UIElement);
+            Classroom Classroom = new Classroom();
+            Classroom.Show();
             this.Close();
         }
 
-        // Chọn "Thoát ứng dụng"
-        private void ExitMenu_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
+        private bool isSoundOn = true;
 
-        
-
-        private void SoundButton_Click(object sender, RoutedEventArgs e)
+        private void SoundImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            AnimateClickEffect(sender as UIElement);
             isSoundOn = !isSoundOn;
+
+            var image = sender as Image;
+            if (image == null) return;
 
             if (isSoundOn)
             {
-                SoundButton.Content = "🔊";
-                SoundButton.ToolTip = "Tắt âm thanh";
-                App.SetMusicVolume(1.0); // Gọi từ App.xaml.cs
+                image.Source = new BitmapImage(new Uri("Assets/Button/setting/am_thanh.png", UriKind.Relative));
+                image.ToolTip = "Tắt âm thanh";
+                App.SetMusicVolume(1.0);
             }
             else
             {
-                SoundButton.Content = "🔇";
-                SoundButton.ToolTip = "Bật âm thanh";
-                App.SetMusicVolume(0.0); // Tắt âm thanh
+                image.Source = new BitmapImage(new Uri("Assets/Button/setting/am_thanh.png", UriKind.Relative));
+                image.ToolTip = "Bật âm thanh";
+                App.SetMusicVolume(0.0);
             }
         }
 
+        private void SettingsImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            AnimateClickEffect(sender as UIElement);
+        }
+
+        private void MenuImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            AnimateClickEffect(sender as UIElement);
+            // Ví dụ quay lại PlayWindow
+            PlayWindow playWindow = new PlayWindow();
+            playWindow.Show();
+            this.Close();
+        }
+
+        
     }
 }

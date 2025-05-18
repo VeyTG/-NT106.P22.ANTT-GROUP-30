@@ -4,7 +4,23 @@
         Title="Virtual Pet" Height="500" Width="800">
 
     <Window.Resources>
-        <!-- Style dùng chung cho các nút tròn -->
+        <!-- Hiệu ứng click thu phóng ảnh -->
+        <Storyboard x:Key="ImageClickEffect">
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                         To="0.85" Duration="0:0:0.05" AutoReverse="True"/>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                         To="0.85" Duration="0:0:0.05" AutoReverse="True"/>
+        </Storyboard>
+        <Storyboard x:Key="ClickEffectStoryboard">
+            <DoubleAnimation
+        Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+        To="1.2" Duration="0:0:0.1" AutoReverse="True"/>
+            <DoubleAnimation
+        Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+        To="1.2" Duration="0:0:0.1" AutoReverse="True"/>
+        </Storyboard>
+
+        <!-- Style nút tròn lớn -->
         <Style x:Key="CircleButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="60"/>
             <Setter Property="Height" Value="60"/>
@@ -33,7 +49,7 @@
             </Setter>
         </Style>
 
-        <!-- Style cho các nút nhỏ (âm thanh, cài đặt) -->
+        <!-- Style nút nhỏ -->
         <Style x:Key="SmallButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="40"/>
             <Setter Property="Height" Value="40"/>
@@ -65,20 +81,30 @@
 
     <Grid>
         <!-- Nền -->
-        <Image Source="Assets/feed.png" Stretch="Fill" />
+        <Image Source="Assets/feed.png" Stretch="Fill"/>
 
-        <!-- Nút Cài đặt và Âm thanh -->
+        <!-- Nút chức năng (âm thanh, cài đặt, menu) -->
         <StackPanel Orientation="Vertical"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Margin="0,32,10,0">
-
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Margin="0,32,10,0" RenderTransformOrigin="0.5,0.5" Height="207" Width="70">
+            <StackPanel.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.422"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </StackPanel.RenderTransform>
 
             <!-- Nút Âm thanh -->
             <Image Source="Assets/Button/setting/am_thanh.png"
-         Width="60" Height="60" Margin="5"
-         MouseLeftButtonUp="SoundImage_MouseLeftButtonUp"
-         ToolTip="Bật/Tắt âm thanh" Cursor="Hand">
+                   Width="60" Height="60" Margin="5"
+                   MouseLeftButtonUp="SoundImage_MouseLeftButtonUp"
+                   ToolTip="Bật/Tắt âm thanh" Cursor="Hand" RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <ScaleTransform/>
+                </Image.RenderTransform>
                 <Image.Clip>
                     <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
                 </Image.Clip>
@@ -86,43 +112,46 @@
 
             <!-- Nút Cài đặt -->
             <Image Source="Assets/Button/setting/setting.png"
-       Width="60" Height="60" Margin="5"
-       MouseLeftButtonUp="SettingsImage_MouseLeftButtonUp"
-       ToolTip="Cài đặt" Cursor="Hand">
+                   Width="60" Height="60" Margin="5"
+                   MouseLeftButtonUp="SettingsImage_MouseLeftButtonUp"
+                   ToolTip="Cài đặt" Cursor="Hand" RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <ScaleTransform/>
+                </Image.RenderTransform>
                 <Image.Clip>
                     <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
                 </Image.Clip>
             </Image>
 
-            <!-- Nút menu 3 gạch -->
+            <!-- Nút Menu -->
             <Image Source="Assets/Button/setting/more.png"
-       Width="60" Height="60" Margin="5"
-       MouseLeftButtonUp="MenuImage_MouseLeftButtonUp"
-       ToolTip="Menu" Cursor="Hand">
+                   Width="60" Height="60" Margin="5"
+                   MouseLeftButtonUp="MenuImage_MouseLeftButtonUp"
+                   ToolTip="Menu" Cursor="Hand" RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <ScaleTransform/>
+                </Image.RenderTransform>
                 <Image.Clip>
                     <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
                 </Image.Clip>
             </Image>
         </StackPanel>
 
-        <!-- Các thanh trạng thái -->
+        <!-- Thanh trạng thái -->
         <Grid Margin="0,0,0,414" Height="70" HorizontalAlignment="Center" Width="720">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="106*"/>
-                <ColumnDefinition Width="117*"/>
-                <!-- Cột giữa rộng hơn -->
-                <ColumnDefinition Width="137*"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <!-- Ngủ -->
-            <StackPanel Margin="0,20,0,0" Width="250" HorizontalAlignment="Center">
+            <StackPanel Grid.Column="0" Margin="0,20,0,0" Width="250" HorizontalAlignment="Center">
                 <Grid Width="210" Height="40" Margin="10,0">
                     <Image Source="Assets/Button/ngu/bg.png" Stretch="Fill" Margin="-10,0,10,0"/>
-                    <Border Width="190" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                        CornerRadius="10" ClipToBounds="True" RenderTransformOrigin="0.573,0.52">
-                        <Image x:Name="HealthFill2"
-                                Source="Assets/Button/ngu/blood-03.png"
-                                Stretch="Fill" Margin="22,0,10,0" RenderTransformOrigin="0.519,0.522"/>
+                    <Border Width="190" Height="20" CornerRadius="10" ClipToBounds="True" VerticalAlignment="Center">
+                        <Image x:Name="HealthFill2" Source="Assets/Button/ngu/blood-03.png"
+                               Stretch="Fill" Margin="22,0,10,0"/>
                     </Border>
                 </Grid>
             </StackPanel>
@@ -130,12 +159,10 @@
             <!-- Thức ăn -->
             <StackPanel Grid.Column="1" Margin="0,20,0,0" Width="250" HorizontalAlignment="Center">
                 <Grid Width="210" Height="40" Margin="10,0">
-                    <Image Source="Assets/Button/thuc_an/bg.png" Stretch="Fill" HorizontalAlignment="Left" Width="210" Margin="-10,0,0,0"/>
-                    <Border Width="190" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                     CornerRadius="10" ClipToBounds="True" RenderTransformOrigin="0.573,0.52">
-                        <Image x:Name="HealthFill1"
-                                Source="Assets/Button/thuc_an/blood.png"
-                                Stretch="Fill" Margin="22,0,10,0" RenderTransformOrigin="0.519,0.522"/>
+                    <Image Source="Assets/Button/thuc_an/bg.png" Stretch="Fill" Margin="-10,0,0,0"/>
+                    <Border Width="190" Height="20" CornerRadius="10" ClipToBounds="True" VerticalAlignment="Center">
+                        <Image x:Name="HealthFill1" Source="Assets/Button/thuc_an/blood.png"
+                               Stretch="Fill" Margin="22,0,10,0"/>
                     </Border>
                 </Grid>
             </StackPanel>
@@ -143,78 +170,50 @@
             <!-- Học bài -->
             <StackPanel Grid.Column="2" Margin="0,20,0,0" Width="250" HorizontalAlignment="Center">
                 <Grid Width="210" Height="40" Margin="10,0">
-                    <Image Source="Assets/Button/hoc_bai/bg-02.png" Stretch="Fill" HorizontalAlignment="Left" Width="210" Margin="-10,0,0,0"/>
-                    <Border Width="190" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                     CornerRadius="10" ClipToBounds="True" RenderTransformOrigin="0.573,0.52">
-                        <Image x:Name="HealthFill3"
-                        Source="Assets/Button/hoc_bai/blood-03.png"
-                        Stretch="Fill" Margin="22,0,10,0" RenderTransformOrigin="0.519,0.522"/>
+                    <Image Source="Assets/Button/hoc_bai/bg-02.png" Stretch="Fill" Margin="-10,0,0,0"/>
+                    <Border Width="190" Height="20" CornerRadius="10" ClipToBounds="True" VerticalAlignment="Center">
+                        <Image x:Name="HealthFill3" Source="Assets/Button/hoc_bai/blood-03.png"
+                               Stretch="Fill" Margin="22,0,10,0"/>
                     </Border>
                 </Grid>
             </StackPanel>
         </Grid>
 
-        <!-- Hiệu ứng bánh -->
+        <!-- Hiệu ứng món ăn khi cho ăn -->
         <Image x:Name="FoodImage" Source="Assets/food.png" Width="50" Height="50"
                HorizontalAlignment="Right" VerticalAlignment="Bottom"
                Margin="300,125" Visibility="Collapsed"/>
 
-        <!-- Nút chuyển hướng -->
-        <StackPanel Orientation="Horizontal"
-         HorizontalAlignment="Left"
-         VerticalAlignment="Bottom"
-         Margin="10,0,0,0" Height="80" Width="96">
-            <Image Source="Assets/Button/setting/left.png"
-             Width="70" Height="70"
-             MouseLeftButtonUp="ArrowImage_MouseLeftButtonUp"
-             ToolTip="Nút mũi tên"
-             Cursor="Hand" />
-
-        </StackPanel>
-
-        <!-- Món ăn + giá tiền -->
+        <!-- Nút món ăn + giá tiền -->
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top"
                     Margin="0,269,0,0"
                     MouseLeftButtonUp="Food_Click"
                     Cursor="Hand">
             <Image x:Name="FoodImage1"
                    Source="Assets/Button/Food/donut.png"
-                   Width="100" Height="100"
-                   />
+                   Width="100" Height="100"/>
             <TextBlock x:Name="FoodPrice"
                        Text="10 xu"
                        FontSize="25" FontWeight="Bold"
                        TextAlignment="Center"/>
         </StackPanel>
 
-        <!-- Nút chuyển hướng -->
-        <StackPanel Orientation="Horizontal"
-         HorizontalAlignment="Left"
-         VerticalAlignment="Bottom"
-         Margin="274,0,0,82" Height="80" Width="176">
-            <!-- Quay lại -->
-            <Image Source="Assets/Button/setting/left.png"
-             Width="70" Height="70"
-             MouseLeftButtonUp="ArrowImage_MouseLeftButtonUp"
-             ToolTip="Nút mũi tên"
-             Cursor="Hand" />
-            <!-- Quay lại -->
-        </StackPanel>
+        <!-- Nút chuyển trái -->
+        <Image Source="Assets/Button/setting/left.png"
+               Width="70" Height="70"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Bottom"
+               Margin="230,0,0,135"
+               MouseLeftButtonUp="ArrowImage_MouseLeftButtonUp"
+               ToolTip="Quay lại" Cursor="Hand"/>
 
-        <!-- Nút chuyển hướng -->
-        <StackPanel Orientation="Horizontal"
-         HorizontalAlignment="Left"
-         VerticalAlignment="Bottom"
-         Margin="455,0,0,82" Height="80" Width="176">
-            <!-- Tiến lên -->
-            <Image Source="Assets/Button/setting/right.png"
-             Width="70" Height="70"
-             MouseLeftButtonUp="ArrowImage_MouseLeftButtonUp"
-             ToolTip="Nút mũi tên"
-             Cursor="Hand" RenderTransformOrigin="-0.198,0.509" />
-        </StackPanel>
-
-
-
+        <!-- Nút chuyển phải -->
+        <Image Source="Assets/Button/setting/right.png"
+               Width="70" Height="70"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Bottom"
+               Margin="0,0,234,135"
+               MouseLeftButtonUp="ArrowImage_MouseLeftButtonUp"
+               ToolTip="Tiếp theo" Cursor="Hand"/>
     </Grid>
 </Window>
