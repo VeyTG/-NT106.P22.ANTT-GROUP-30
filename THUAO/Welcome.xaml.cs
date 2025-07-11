@@ -6,6 +6,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
+using THUAO.Properties;
 
 namespace ThuAo
 {
@@ -25,49 +26,7 @@ namespace ThuAo
             clone.Begin();
         }
 
-        private bool isSoundOn = true;
-
-        private void SoundImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            AnimateClickEffect(sender as UIElement);
-            isSoundOn = !isSoundOn;
-
-            var image = sender as Image;
-            if (image == null) return;
-
-            if (isSoundOn)
-            {
-                image.Source = new BitmapImage(new Uri("Assets/Button/setting/am_thanh.png", UriKind.Relative));
-                image.ToolTip = "Tắt âm thanh";
-                App.SetMusicVolume(1.0);
-            }
-            else
-            {
-                image.Source = new BitmapImage(new Uri("Assets/Button/setting/tat_am.png", UriKind.Relative));
-                image.ToolTip = "Bật âm thanh";
-                App.SetMusicVolume(0.0);
-            }
-        }
-
-        private void SettingsImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            AnimateClickEffect(sender as UIElement);
-            Setting Setting = new Setting();
-            Setting.Show();
-            this.Close();
-        }
-
-        private void MenuImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-
-            AnimateClickEffect(sender as UIElement);
-
-
-            Application.Current.Shutdown();
-
-
-
-        }
+        
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             // Create and show the LoginWindow

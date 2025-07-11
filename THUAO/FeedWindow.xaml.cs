@@ -7,6 +7,7 @@ using System.Windows.Threading;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Media;
+using THUAO.Properties;
 
 namespace ThuAo
 {
@@ -23,38 +24,36 @@ namespace ThuAo
         };
 
         private int currentFoodIndex = 0;
-
-        // Thanh năng lượng ăn, ngủ, học
-        private double foodEnergy = 75;
-        private double sleepEnergy = 75;
-        private double studyEnergy = 75;
-
-        private const double MaxEnergy = 100;
-
+        private readonly GameState gameState; // Biến lưu trạng thái game chung
         private DispatcherTimer energyTimer;
 
-        public FeedWindow()
+        public FeedWindow(GameState state)
         {
             InitializeComponent();
+            gameState = state; // Gán trạng thái game được truyền vào
 
             LoadCurrentFood();
             UpdateFoodEnergyVisual();
             UpdateSleepEnergyVisual();
             UpdateStudyEnergyVisual();
+            UpdateCoinDisplay(); // Cập nhật hiển thị số xu
 
             // Khởi tạo timer giảm năng lượng
             energyTimer = new DispatcherTimer();
             energyTimer.Interval = TimeSpan.FromSeconds(5);
             energyTimer.Tick += EnergyTimer_Tick;
             energyTimer.Start();
+
+            // Khởi tạo và đồng bộ SettingOverlay
+            InitializeSettingOverlay();
         }
 
         private void EnergyTimer_Tick(object sender, EventArgs e)
         {
             // Giảm năng lượng mỗi 5 giây, không dưới 0
-            foodEnergy = Math.Max(0, foodEnergy - 1);
-            sleepEnergy = Math.Max(0, sleepEnergy - 0.5);
-            studyEnergy = Math.Max(0, studyEnergy - 0.3);
+            gameState.FoodEnergy = Math.Max(0, gameState.FoodEnergy - 1);
+            gameState.SleepEnergy = Math.Max(0, gameState.SleepEnergy - 0.5);
+            gameState.StudyEnergy = Math.Max(0, gameState.StudyEnergy - 0.3);
 
             UpdateFoodEnergyVisual();
             UpdateSleepEnergyVisual();
@@ -64,7 +63,7 @@ namespace ThuAo
         private void LoadCurrentFood()
         {
             var currentFood = foods[currentFoodIndex];
-            string basePath = "Assets/Button/food/";
+            string basePath = "Assets/Button/Food/";
             FoodImage1.Source = LoadImage(basePath + currentFood.ImageFile);
             FoodPrice.Text = currentFood.Price;
         }
@@ -91,24 +90,22 @@ namespace ThuAo
 
         private void IncreaseFoodEnergy(double amount)
         {
-            foodEnergy += amount;
-            if (foodEnergy > MaxEnergy) foodEnergy = MaxEnergy;
+            gameState.FoodEnergy += amount;
+            if (gameState.FoodEnergy > GameState.MaxEnergy) gameState.FoodEnergy = GameState.MaxEnergy;
             UpdateFoodEnergyVisual();
         }
 
-        // Tăng ngủ (ví dụ)
         /*private void IncreaseSleepEnergy(double amount)
         {
-            sleepEnergy += amount;
-            if (sleepEnergy > MaxEnergy) sleepEnergy = MaxEnergy;
+            gameState.SleepEnergy += amount;
+            if (gameState.SleepEnergy > GameState.MaxEnergy) gameState.SleepEnergy = GameState.MaxEnergy;
             UpdateSleepEnergyVisual();
         }
 
-        // Tăng học (ví dụ)
         private void IncreaseStudyEnergy(double amount)
         {
-            studyEnergy += amount;
-            if (studyEnergy > MaxEnergy) studyEnergy = MaxEnergy;
+            gameState.StudyEnergy += amount;
+            if (gameState.StudyEnergy > GameState.MaxEnergy) gameState.StudyEnergy = GameState.MaxEnergy;
             UpdateStudyEnergyVisual();
         }*/
 
@@ -118,7 +115,7 @@ namespace ThuAo
             double marginLeft = 22;
             double marginRight = 10;
             double totalWidth = maxWidth - marginLeft - marginRight;
-            double widthFill = totalWidth * (foodEnergy / MaxEnergy);
+            double widthFill = totalWidth * (gameState.FoodEnergy / GameState.MaxEnergy);
 
             HealthFill1.Margin = new Thickness(marginLeft, 0, marginRight + (totalWidth - widthFill), 0);
         }
@@ -129,7 +126,7 @@ namespace ThuAo
             double marginLeft = 22;
             double marginRight = 10;
             double totalWidth = maxWidth - marginLeft - marginRight;
-            double widthFill = totalWidth * (sleepEnergy / MaxEnergy);
+            double widthFill = totalWidth * (gameState.SleepEnergy / GameState.MaxEnergy);
 
             HealthFill2.Margin = new Thickness(marginLeft, 0, marginRight + (totalWidth - widthFill), 0);
         }
@@ -140,9 +137,14 @@ namespace ThuAo
             double marginLeft = 22;
             double marginRight = 10;
             double totalWidth = maxWidth - marginLeft - marginRight;
-            double widthFill = totalWidth * (studyEnergy / MaxEnergy);
+            double widthFill = totalWidth * (gameState.StudyEnergy / GameState.MaxEnergy);
 
             HealthFill3.Margin = new Thickness(marginLeft, 0, marginRight + (totalWidth - widthFill), 0);
+        }
+
+        private void UpdateCoinDisplay()
+        {
+            CoinTextBlock.Text = gameState.CoinBalance.ToString();
         }
 
         private void PlayEatEffect()
@@ -169,6 +171,7 @@ namespace ThuAo
             Storyboard.SetTarget(clone, element);
             clone.Begin();
         }
+
         private void ArrowImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             AnimateClickEffect(sender as UIElement);
@@ -193,12 +196,15 @@ namespace ThuAo
         private void SoundImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             AnimateClickEffect(sender as UIElement);
-            isSoundOn = !isSoundOn;
+
+            // Đảo trạng thái và lưu lại
+            Settings.Default.MusicOn = !Settings.Default.MusicOn;
+            Settings.Default.Save(); // Lưu xuống file cấu hình
 
             var image = sender as Image;
             if (image == null) return;
 
-            if (isSoundOn)
+            if (Settings.Default.MusicOn)
             {
                 image.Source = new BitmapImage(new Uri("Assets/Button/setting/am_thanh.png", UriKind.Relative));
                 image.ToolTip = "Tắt âm thanh";
@@ -212,22 +218,53 @@ namespace ThuAo
             }
         }
 
-        private void SettingsImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            AnimateClickEffect(sender as UIElement);
-            Setting Setting = new Setting();
-            Setting.Show();
-            this.Close();
-        
-        }
-
         private void MenuImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             AnimateClickEffect(sender as UIElement);
-            // Ví dụ quay lại PlayWindow
-            PlayWindow playWindow = new PlayWindow();
+            PlayWindow playWindow = new PlayWindow(gameState);
             playWindow.Show();
             this.Close();
+        }
+
+        // Phương thức mới để khởi tạo và đồng bộ SettingOverlay
+        private void InitializeSettingOverlay()
+        {
+            isSoundOn = Settings.Default.MusicOn; // Đồng bộ với Settings.Default
+            UpdateSoundImage(isSoundOn);
+
+            // Cập nhật trạng thái ban đầu của SettingOverlay
+            var musicImage = (Image)SettingControl.FindName("MusicImage");
+            var soundOverlayImage = (Image)SettingControl.FindName("SoundOverlayImage");
+            var notifyImage = (Image)SettingControl.FindName("NotifyImage");
+
+            if (musicImage != null) musicImage.Source = new BitmapImage(new Uri(Settings.Default.MusicOn ? "Assets/Button/setting/on.png" : "Assets/Button/setting/off.png", UriKind.Relative));
+            if (soundOverlayImage != null) soundOverlayImage.Source = new BitmapImage(new Uri(Settings.Default.SoundOn ? "Assets/Button/setting/on.png" : "Assets/Button/setting/off.png", UriKind.Relative));
+            if (notifyImage != null) notifyImage.Source = new BitmapImage(new Uri(Settings.Default.NotifyOn ? "Assets/Button/setting/on.png" : "Assets/Button/setting/off.png", UriKind.Relative));
+
+            App.SetMusicVolume(Settings.Default.MusicOn ? 1.0 : 0.0);
+        }
+
+        // Cập nhật hình ảnh âm thanh
+        private void UpdateSoundImage(bool isOn)
+        {
+            if (SoundImage != null)
+            {
+                SoundImage.Source = new BitmapImage(new Uri(isOn ? "Assets/Button/setting/am_thanh.png" : "Assets/Button/setting/tat_am.png", UriKind.Relative));
+                SoundImage.ToolTip = isOn ? "Tắt âm thanh" : "Bật âm thanh";
+            }
+        }
+
+        // Mở SettingOverlay khi nhấn nút Settings
+        private void SettingsImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            AnimateClickEffect(sender as UIElement);
+            var settingsGrid = SettingControl.FindName("SettingsGrid") as Grid;
+            if (settingsGrid != null)
+            {
+                settingsGrid.Visibility = settingsGrid.Visibility == Visibility.Collapsed
+                    ? Visibility.Visible
+                    : settingsGrid.Visibility; // Không thay đổi nếu đã Visible
+            }
         }
 
         // Định nghĩa lớp món ăn

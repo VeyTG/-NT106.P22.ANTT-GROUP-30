@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="ThuAo.SettingOverlay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="SettingControl">
+    <Grid x:Name="SettingsGrid"
+          Visibility="Collapsed"
+          Background="#80000000"
+          Panel.ZIndex="20">
+        <Border x:Name="SettingPanel"
+                Width="300" Height="300"
+                CornerRadius="15"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Margin="0,122,0,0"
+                Background="Transparent">
+            <Grid>
+                <!-- Hình nền của khung setting -->
+                <Image Source="Assets/Button/setting/bg.png" 
+                       Stretch="Uniform" Margin="-10,-17,-10,0" />
+
+                <!-- Các nút chức năng -->
+                <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,38,50,0">
+                    <!-- MUSIC -->
+                    <Image x:Name="MusicImage" Source="Assets/Button/setting/on.png"
+                           Width="70" Height="70" Margin="5"
+                           MouseLeftButtonUp="MusicImage_Click"
+                           ToolTip="Bật/Tắt nhạc"
+                           Cursor="Hand"
+                           RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <ScaleTransform/>
+                        </Image.RenderTransform>
+                    </Image>
+
+                    <!-- SOUND -->
+                    <Image x:Name="SoundOverlayImage" Source="Assets/Button/setting/on.png"
+                           Width="70" Height="70" Margin="5,-11,0,0"
+                           MouseLeftButtonUp="SoundOverlayImage_Click"
+                           ToolTip="Bật/Tắt âm thanh"
+                           Cursor="Hand"
+                           RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <ScaleTransform/>
+                        </Image.RenderTransform>
+                    </Image>
+
+                    <!-- NOTIFY -->
+                    <Image x:Name="NotifyImage" Source="Assets/Button/setting/on.png"
+                           Width="70" Height="70" Margin="5,-11,0,0"
+                           MouseLeftButtonUp="NotifyImage_Click"
+                           ToolTip="Bật/Tắt thông báo"
+                           Cursor="Hand" 
+                           RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <ScaleTransform/>
+                        </Image.RenderTransform>
+                    </Image>
+                </StackPanel>
+
+                <!-- SAVE -->
+                <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,0">
+                    <Image x:Name="SaveImage" Source="Assets/Button/setting/save.png"
+                           Width="80" Height="80" Margin="5"
+                           MouseLeftButtonUp="SaveImage_Click"
+                           ToolTip="Lưu cài đặt"
+                           Cursor="Hand"
+                           RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <ScaleTransform/>
+                        </Image.RenderTransform>
+                    </Image>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

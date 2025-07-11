@@ -177,17 +177,23 @@
     </Compile>
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\Session.cs" />
+    <Compile Include="Options.xaml.cs">
+      <DependentUpon>Options.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PlayWindow.xaml.cs">
       <DependentUpon>PlayWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Setting.xaml.cs">
-      <DependentUpon>Setting.xaml</DependentUpon>
+    <Compile Include="SettingOverlay.xaml.cs">
+      <DependentUpon>SettingOverlay.xaml</DependentUpon>
     </Compile>
     <Compile Include="SignUp.xaml.cs">
       <DependentUpon>SignUp.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="WarningWindow.xaml.cs">
+      <DependentUpon>WarningWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Welcome.xaml.cs">
       <DependentUpon>Welcome.xaml</DependentUpon>
     </Compile>
@@ -230,15 +236,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Options.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PlayWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Setting.xaml">
+    <Page Include="SettingOverlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SignUp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WarningWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -299,11 +313,17 @@
     <Content Include="Assets\backgroundmusic.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Assets\Button\setting\sound.png" />
-    <Resource Include="Assets\Button\setting\inbox.png" />
+    <Resource Include="Assets\Button\setting\off.png" />
+    <Resource Include="Assets\Button\setting\on.png" />
+    <Resource Include="Assets\Button\setting\save.png" />
+    <Resource Include="Assets\Button\setting\bg.png" />
+    <Resource Include="Assets\Button\warning\close.png" />
+    <Resource Include="Assets\Button\warning\bg.png" />
+    <Resource Include="Assets\Button\thuc_an\bg.png" />
+    <Resource Include="Assets\Button\hoc_bai\bg.png" />
+    <Resource Include="Assets\Button\ngu\bg.png" />
+    <Resource Include="Assets\Button\coin\coin.png" />
     <Resource Include="Assets\setting_bg.png" />
-    <Resource Include="Assets\Button\setting\help.png" />
-    <Resource Include="Assets\Button\setting\music.png" />
     <Resource Include="Assets\Button\setting\tat_am.png" />
     <Resource Include="Assets\Button\food\meat.png" />
     <Resource Include="Assets\Button\food\carrot.png" />
@@ -318,15 +338,12 @@
     <Resource Include="Assets\Button\setting\am_thanh.png" />
     <Resource Include="Assets\Button\setting\more.png" />
     <Resource Include="Assets\Button\setting\setting.png" />
-    <Resource Include="Assets\Button\hoc_bai\bg-02.png" />
     <Resource Include="Assets\Button\hoc_bai\blood-03.png" />
     <Resource Include="Assets\Button\hoc_bai\main.png" />
-    <Resource Include="Assets\Button\ngu\bg.png" />
     <Resource Include="Assets\Button\ngu\blood-03.png" />
     <Resource Include="Assets\Button\ngu\main.png" />
     <Resource Include="Assets\Button\thuc_an\main.png" />
     <Resource Include="Assets\Button\thuc_an\blood.png" />
-    <Resource Include="Assets\Button\thuc_an\bg.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

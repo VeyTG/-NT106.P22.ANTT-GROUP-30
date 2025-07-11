@@ -6,8 +6,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Windows.Controls;
 using System.Windows.Media;
-using ThuAo.Models;
 using System.Windows.Media.Animation;
+using ThuAo.Models;
+using THUAO.Properties;
 
 namespace ThuAo
 {
@@ -15,17 +16,28 @@ namespace ThuAo
     {
         private List<Question> questions;
         private int currentQuestionIndex = 0;
+        private readonly GameState gameState; // Biến lưu trạng thái game được truyền từ PlayWindow
+        private DispatcherTimer energyTimer;
+        private bool isSoundOn = true;
 
-        public Classroom()
+        public Classroom(GameState gameState)
         {
+            this.gameState = gameState; // Nhận GameState từ PlayWindow
             InitializeComponent();
             LoadQuestions();
             DisplayQuestion(currentQuestionIndex);
-            // Khởi tạo timer giảm năng lượng
+            UpdateFoodEnergyVisual();
+            UpdateSleepEnergyVisual();
+            UpdateStudyEnergyVisual();
+            UpdateCoinDisplay();
+
             energyTimer = new DispatcherTimer();
             energyTimer.Interval = TimeSpan.FromSeconds(15);
             energyTimer.Tick += EnergyTimer_Tick;
             energyTimer.Start();
+
+            // Khởi tạo và cập nhật trạng thái SettingOverlay
+            InitializeSettingOverlay();
         }
 
         private void LoadQuestions()
@@ -70,7 +82,6 @@ namespace ThuAo
             OptionC.Text = "C. " + q.Options[2];
             OptionD.Text = "D. " + q.Options[3];
 
-            // Reset màu và kết quả
             ResetOptionColors();
             ResultText.Text = "";
         }
@@ -91,10 +102,21 @@ namespace ThuAo
         {
             if (sender is TextBlock clicked)
             {
+                // Kiểm tra đủ xu để trả lời (5 xu mỗi lần)
+                if (gameState.CoinBalance < 5)
+                {
+                    ResultText.Foreground = Brushes.Red;
+                    ResultText.Text = "Không đủ xu!";
+                    return;
+                }
+
+                // Trừ 5 xu khi trả lời câu hỏi
+                gameState.CoinBalance -= 5;
+                UpdateCoinDisplay();
+
                 int selectedIndex = AnswerPanel.Children.IndexOf(clicked);
                 var correctIndex = questions[currentQuestionIndex].CorrectIndex;
 
-                // Reset lại màu của tất cả đáp án trước khi tô màu mới
                 ResetOptionColors();
 
                 if (selectedIndex == correctIndex)
@@ -102,14 +124,16 @@ namespace ThuAo
                     clicked.Background = Brushes.LightGreen;
                     ResultText.Foreground = Brushes.Green;
                     ResultText.Text = "Chính xác!";
+                    gameState.CoinBalance += 10; // Thưởng 10 xu khi trả lời đúng
+                    gameState.StudyEnergy = Math.Min(GameState.MaxEnergy, gameState.StudyEnergy + 5); // Tăng 5 năng lượng học khi đúng
                 }
                 else
                 {
-                    clicked.Background = Brushes.IndianRed; // Đáp án sai tô đỏ
+                    clicked.Background = Brushes.IndianRed;
                     ResultText.Foreground = Brushes.Red;
                     ResultText.Text = $"Sai rồi! Đáp án đúng là: {(char)(65 + correctIndex)}";
+                    gameState.StudyEnergy = Math.Min(GameState.MaxEnergy, gameState.StudyEnergy + 2); // Tăng 2 năng lượng học khi sai
 
-                    // Tô màu xanh đáp án đúng
                     if (correctIndex >= 0 && correctIndex < AnswerPanel.Children.Count)
                     {
                         if (AnswerPanel.Children[correctIndex] is TextBlock correctOption)
@@ -118,84 +142,72 @@ namespace ThuAo
                         }
                     }
                 }
+
+                // Cập nhật giao diện sau khi thay đổi
+                UpdateStudyEnergyVisual();
+                UpdateCoinDisplay();
             }
         }
 
-
-        // Thanh năng lượng ăn, ngủ, học
-        private double foodEnergy = 50;
-        private double sleepEnergy = 50;
-        private double studyEnergy = 50;
-
-        private const double MaxEnergy = 100;
-
-        private DispatcherTimer energyTimer;
-
-       
-
         private void EnergyTimer_Tick(object sender, EventArgs e)
         {
-            // Giảm năng lượng mỗi 5 giây, không dưới 0
-            foodEnergy = Math.Max(0, foodEnergy - 1);
-            sleepEnergy = Math.Max(0, sleepEnergy - 0.5);
-            studyEnergy = Math.Max(0, studyEnergy - 0.3);
+            gameState.FoodEnergy = Math.Max(0, gameState.FoodEnergy - 1);
+            gameState.SleepEnergy = Math.Max(0, gameState.SleepEnergy - 0.5);
+            gameState.StudyEnergy = Math.Max(0, gameState.StudyEnergy - 0.3);
 
-           
-            //UpdateSleepEnergyVisual();
-            //UpdateStudyEnergyVisual();
-        }
-
-
-
-        // Tăng ngủ (ví dụ)
-        /*private void IncreaseSleepEnergy(double amount)
-        {
-            sleepEnergy += amount;
-            if (sleepEnergy > MaxEnergy) sleepEnergy = MaxEnergy;
+            UpdateFoodEnergyVisual();
             UpdateSleepEnergyVisual();
+            UpdateStudyEnergyVisual();
         }
 
-        // Tăng học (ví dụ)
-        private void IncreaseStudyEnergy(double amount)
+        private void UpdateFoodEnergyVisual()
         {
-            studyEnergy += amount;
-            if (studyEnergy > MaxEnergy) studyEnergy = MaxEnergy;
-            UpdateStudyEnergyVisual();
-        }*/
+            double maxWidth = 190;
+            double marginLeft = 22;
+            double marginRight = 10;
+            double totalWidth = maxWidth - marginLeft - marginRight;
+            double widthFill = totalWidth * (gameState.FoodEnergy / GameState.MaxEnergy);
 
+            HealthFill1.Margin = new Thickness(marginLeft, 0, marginRight + (totalWidth - widthFill), 0);
+        }
 
+        private void UpdateSleepEnergyVisual()
+        {
+            double maxWidth = 190;
+            double marginLeft = 22;
+            double marginRight = 10;
+            double totalWidth = maxWidth - marginLeft - marginRight;
+            double widthFill = totalWidth * (gameState.SleepEnergy / GameState.MaxEnergy);
 
-        /* private void UpdateSleepEnergyVisual()
-         {
-             double maxWidth = 190;
-             double marginLeft = 22;
-             double marginRight = 10;
-             double totalWidth = maxWidth - marginLeft - marginRight;
-             double widthFill = totalWidth * (sleepEnergy / MaxEnergy);
+            HealthFill2.Margin = new Thickness(marginLeft, 0, marginRight + (totalWidth - widthFill), 0);
+        }
 
-             HealthFill2.Margin = new Thickness(marginLeft, 0, marginRight + (totalWidth - widthFill), 0);
-         }*/
+        private void UpdateStudyEnergyVisual()
+        {
+            double maxWidth = 190;
+            double marginLeft = 22;
+            double marginRight = 10;
+            double totalWidth = maxWidth - marginLeft - marginRight;
+            double widthFill = totalWidth * (gameState.StudyEnergy / GameState.MaxEnergy);
 
-        /* private void UpdateStudyEnergyVisual()
-         {
-             double maxWidth = 190;
-             double marginLeft = 22;
-             double marginRight = 10;
-             double totalWidth = maxWidth - marginLeft - marginRight;
-             double widthFill = totalWidth * (studyEnergy / MaxEnergy);
+            HealthFill3.Margin = new Thickness(marginLeft, 0, marginRight + (totalWidth - widthFill), 0);
+        }
 
-             HealthFill3.Margin = new Thickness(marginLeft, 0, marginRight + (totalWidth - widthFill), 0);
-         }*/
+        private void UpdateCoinDisplay()
+        {
+            CoinTextBlock.Text = gameState.CoinBalance.ToString();
+        }
 
         private void AnimateClickEffect(UIElement element)
         {
             element.RenderTransform = new ScaleTransform(1.0, 1.0);
             element.RenderTransformOrigin = new Point(0.5, 0.5);
             Storyboard sb = (Storyboard)FindResource("ClickEffectStoryboard");
-            Storyboard clone = sb.Clone(); // Đảm bảo hiệu ứng chạy độc lập mỗi lần
+            Storyboard clone = sb.Clone();
             Storyboard.SetTarget(clone, element);
             clone.Begin();
         }
+
         private void ArrowImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             AnimateClickEffect(sender as UIElement);
@@ -216,44 +228,39 @@ namespace ThuAo
             DisplayQuestion(currentQuestionIndex);
         }
 
-
-        private void FeedImage_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void FeedImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            // Mở cửa sổ chơi mới
-            FeedWindow FeedWindow = new FeedWindow();
-            FeedWindow.Show();
+            AnimateClickEffect(sender as UIElement);
+            FeedWindow feedWindow = new FeedWindow(gameState);
+            feedWindow.Show();
             this.Close();
         }
 
-        // Ngủ
-        private void SleepImage_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void SleepImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            // Mở cửa sổ chơi mới
-            Bedroom Bedroom = new Bedroom();
-            Bedroom.Show();
-
-            // Đóng cửa sổ hiện tại (PlayWindow)
+            AnimateClickEffect(sender as UIElement);
+            Bedroom bedroom = new Bedroom(gameState);
+            bedroom.Show();
             this.Close();
         }
 
-        // Học bài
-        private void StudyImage_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void StudyImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Classroom Classroom = new Classroom();
-            Classroom.Show();
-            this.Close();
+            AnimateClickEffect(sender as UIElement);
         }
-
-        private bool isSoundOn = true;
 
         private void SoundImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            isSoundOn = !isSoundOn;
             AnimateClickEffect(sender as UIElement);
+
+            // Đảo trạng thái và lưu lại
+            Settings.Default.MusicOn = !Settings.Default.MusicOn;
+            Settings.Default.Save(); // Lưu xuống file cấu hình
+
             var image = sender as Image;
             if (image == null) return;
 
-            if (isSoundOn)
+            if (Settings.Default.MusicOn)
             {
                 image.Source = new BitmapImage(new Uri("Assets/Button/setting/am_thanh.png", UriKind.Relative));
                 image.ToolTip = "Tắt âm thanh";
@@ -267,22 +274,53 @@ namespace ThuAo
             }
         }
 
-        private void SettingsImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            AnimateClickEffect(sender as UIElement);
-            Setting Setting = new Setting();
-            Setting.Show();
-            this.Close();
-        }
-
         private void MenuImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            // Ví dụ quay lại PlayWindow
-            PlayWindow playWindow = new PlayWindow();
+            AnimateClickEffect(sender as UIElement);
+            PlayWindow playWindow = new PlayWindow(gameState);
             playWindow.Show();
             this.Close();
         }
 
-       
+        // Phương thức mới để khởi tạo và đồng bộ SettingOverlay
+        private void InitializeSettingOverlay()
+        {
+            isSoundOn = Settings.Default.MusicOn; // Đồng bộ với Settings.Default
+            UpdateSoundImage(isSoundOn);
+
+            // Cập nhật trạng thái ban đầu của SettingOverlay
+            var musicImage = (Image)SettingControl.FindName("MusicImage");
+            var soundOverlayImage = (Image)SettingControl.FindName("SoundOverlayImage");
+            var notifyImage = (Image)SettingControl.FindName("NotifyImage");
+
+            if (musicImage != null) musicImage.Source = new BitmapImage(new Uri(Settings.Default.MusicOn ? "Assets/Button/setting/on.png" : "Assets/Button/setting/off.png", UriKind.Relative));
+            if (soundOverlayImage != null) soundOverlayImage.Source = new BitmapImage(new Uri(Settings.Default.SoundOn ? "Assets/Button/setting/on.png" : "Assets/Button/setting/off.png", UriKind.Relative));
+            if (notifyImage != null) notifyImage.Source = new BitmapImage(new Uri(Settings.Default.NotifyOn ? "Assets/Button/setting/on.png" : "Assets/Button/setting/off.png", UriKind.Relative));
+
+            App.SetMusicVolume(Settings.Default.MusicOn ? 1.0 : 0.0);
+        }
+
+        // Cập nhật hình ảnh âm thanh
+        private void UpdateSoundImage(bool isOn)
+        {
+            if (SoundImage != null)
+            {
+                SoundImage.Source = new BitmapImage(new Uri(isOn ? "Assets/Button/setting/am_thanh.png" : "Assets/Button/setting/tat_am.png", UriKind.Relative));
+                SoundImage.ToolTip = isOn ? "Tắt âm thanh" : "Bật âm thanh";
+            }
+        }
+
+        // Mở SettingOverlay khi nhấn nút Settings
+        private void SettingsImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            AnimateClickEffect(sender as UIElement);
+            var settingsGrid = SettingControl.FindName("SettingsGrid") as Grid;
+            if (settingsGrid != null)
+            {
+                settingsGrid.Visibility = settingsGrid.Visibility == Visibility.Collapsed
+                    ? Visibility.Visible
+                    : settingsGrid.Visibility; // Không thay đổi nếu đã Visible
+            }
+        }
     }
 }
