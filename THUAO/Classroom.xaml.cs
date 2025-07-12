@@ -19,6 +19,7 @@ namespace ThuAo
         private readonly GameState gameState; // Biến lưu trạng thái game được truyền từ PlayWindow
         private DispatcherTimer energyTimer;
         private bool isSoundOn = true;
+        private HashSet<int> correctlyAnsweredQuestions = new HashSet<int>();
 
         public Classroom(GameState gameState)
         {
@@ -84,7 +85,19 @@ namespace ThuAo
 
             ResetOptionColors();
             ResultText.Text = "";
+
+            if (correctlyAnsweredQuestions.Contains(index))
+            {
+                // Tô lại màu đáp án đúng
+                int correct = q.CorrectIndex;
+                if (AnswerPanel.Children[correct] is TextBlock tb)
+                    tb.Background = Brushes.LightGreen;
+
+                ResultText.Text = "Bạn đã trả lời đúng câu này!";
+                ResultText.Foreground = Brushes.Green;
+            }
         }
+
 
         private void ResetOptionColors()
         {
@@ -102,6 +115,14 @@ namespace ThuAo
         {
             if (sender is TextBlock clicked)
             {
+                // Nếu đã trả lời đúng câu này thì không cho chọn lại nữa
+                if (correctlyAnsweredQuestions.Contains(currentQuestionIndex))
+                {
+                    ResultText.Foreground = Brushes.Gray;
+                    ResultText.Text = "Bạn đã trả lời đúng câu này rồi!";
+                    return;
+                }
+
                 // Kiểm tra đủ xu để trả lời (5 xu mỗi lần)
                 if (gameState.CoinBalance < 5)
                 {
@@ -115,7 +136,7 @@ namespace ThuAo
                 UpdateCoinDisplay();
 
                 int selectedIndex = AnswerPanel.Children.IndexOf(clicked);
-                var correctIndex = questions[currentQuestionIndex].CorrectIndex;
+                int correctIndex = questions[currentQuestionIndex].CorrectIndex;
 
                 ResetOptionColors();
 
@@ -124,30 +145,31 @@ namespace ThuAo
                     clicked.Background = Brushes.LightGreen;
                     ResultText.Foreground = Brushes.Green;
                     ResultText.Text = "Chính xác!";
-                    gameState.CoinBalance += 10; // Thưởng 10 xu khi trả lời đúng
-                    gameState.StudyEnergy = Math.Min(GameState.MaxEnergy, gameState.StudyEnergy + 5); // Tăng 5 năng lượng học khi đúng
+                    gameState.CoinBalance += 30;
+                    gameState.StudyEnergy = Math.Min(GameState.MaxEnergy, gameState.StudyEnergy + 5);
+
+                    //Lưu trạng thái đã đúng để khóa lại sau này
+                    correctlyAnsweredQuestions.Add(currentQuestionIndex);
                 }
                 else
                 {
                     clicked.Background = Brushes.IndianRed;
                     ResultText.Foreground = Brushes.Red;
                     ResultText.Text = $"Sai rồi! Đáp án đúng là: {(char)(65 + correctIndex)}";
-                    gameState.StudyEnergy = Math.Min(GameState.MaxEnergy, gameState.StudyEnergy + 2); // Tăng 2 năng lượng học khi sai
+                    gameState.StudyEnergy = Math.Min(GameState.MaxEnergy, gameState.StudyEnergy + 2);
 
-                    if (correctIndex >= 0 && correctIndex < AnswerPanel.Children.Count)
+                    // Tô màu đáp án đúng cho người học
+                    if (AnswerPanel.Children[correctIndex] is TextBlock correctOption)
                     {
-                        if (AnswerPanel.Children[correctIndex] is TextBlock correctOption)
-                        {
-                            correctOption.Background = Brushes.LightGreen;
-                        }
+                        correctOption.Background = Brushes.LightGreen;
                     }
                 }
 
-                // Cập nhật giao diện sau khi thay đổi
                 UpdateStudyEnergyVisual();
                 UpdateCoinDisplay();
             }
         }
+
 
         private void EnergyTimer_Tick(object sender, EventArgs e)
         {
@@ -249,6 +271,7 @@ namespace ThuAo
             AnimateClickEffect(sender as UIElement);
         }
 
+        //Âm thanh góc trên bên phải
         private void SoundImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             AnimateClickEffect(sender as UIElement);
@@ -274,6 +297,7 @@ namespace ThuAo
             }
         }
 
+        // Mở PlayWindow khi nhấn vào hình ảnh MenuImage
         private void MenuImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             AnimateClickEffect(sender as UIElement);
@@ -321,6 +345,11 @@ namespace ThuAo
                     ? Visibility.Visible
                     : settingsGrid.Visibility; // Không thay đổi nếu đã Visible
             }
+        }
+
+        private void SettingControl_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

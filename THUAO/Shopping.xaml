@@ -1,0 +1,352 @@
+﻿<Window x:Class="ThuAo.Shopping"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:settingoverlay="clr-namespace:ThuAo"
+        Title="Shopping" Height="500" Width="800"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <!-- Hiệu ứng click thu phóng ảnh -->
+        <Storyboard x:Key="ImageClickEffect">
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                 To="0.85" Duration="0:0:0.05" AutoReverse="True"/>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                 To="0.85" Duration="0:0:0.05" AutoReverse="True"/>
+        </Storyboard>
+        <Storyboard x:Key="ClickEffectStoryboard">
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                To="1.2" Duration="0:0:0.1" AutoReverse="True"/>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                To="1.2" Duration="0:0:0.1" AutoReverse="True"/>
+        </Storyboard>
+        <!-- Các style y hệt file FeedWindow -->
+        <Style x:Key="CircleButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="30">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFE3F2FD"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF90CAF9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SmallButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFBBDEFB"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF64B5F6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!-- Nền -->
+        <Image Source="/Assets/bg_shopping.png" Stretch="Fill" />
+
+        <!-- Nút chuyển hướng -->
+        <StackPanel Orientation="Horizontal"
+         HorizontalAlignment="Left"
+         VerticalAlignment="Bottom"
+         Margin="10,0,0,0" Height="80" Width="90">
+            <!-- Quay lại -->
+            <Image Source="Assets/Button/setting/left.png"
+             Width="70" Height="70"
+             MouseLeftButtonUp="ArrowImage_MouseLeftButtonUp"
+             ToolTip="Nút mũi tên"
+             Cursor="Hand"/>
+            <!-- Quay lại -->
+        </StackPanel>
+
+        <!-- Xu đang có -->
+        <StackPanel Margin="620,20,0,417" Width="140" HorizontalAlignment="Left">
+            <Button Width="160" Height="40" BorderThickness="0" Background="Transparent" Cursor="Hand">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="7*"/>
+                        <RowDefinition Height="31*"/>
+                    </Grid.RowDefinitions>
+                    <!-- Hình nền nút -->
+                    <Image Source="Assets/button/coin/coin.png" Stretch="Fill" HorizontalAlignment="Left" Width="130" Height="40" Margin="-32,0,0,-2" Grid.RowSpan="2"/>
+                    <!-- Text hiện số xu -->
+                    <TextBlock x:Name="CoinTextBlock"
+                               Text="100"
+                               Foreground="White"
+                               FontWeight="Bold"
+                               FontSize="16"
+                               VerticalAlignment="Top" Margin="0,2,43,0" Grid.Row="1" HorizontalAlignment="Right" Width="28"/>
+                </Grid>
+            </Button>
+        </StackPanel>
+
+        <!-- Nút Cài đặt và Âm thanh -->
+        <StackPanel Orientation="Vertical"
+    HorizontalAlignment="Right"
+    VerticalAlignment="Top"
+    Margin="0,70,10,0" Grid.ColumnSpan="2">
+            <!-- Nút Âm thanh -->
+            <Image x:Name="SoundImage"
+           Source="Assets/Button/setting/am_thanh.png"
+           Width="50" Height="50" Margin="5"
+           MouseLeftButtonUp="SoundImage_MouseLeftButtonUp"
+           ToolTip="Bật/Tắt âm thanh" Cursor="Hand" RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <ScaleTransform/>
+                </Image.RenderTransform>
+                <Image.Clip>
+                    <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
+                </Image.Clip>
+            </Image>
+
+            <!-- Nút Cài đặt -->
+            <Image Source="Assets/Button/setting/setting.png"
+           Width="50" Height="50" Margin="5"
+           MouseLeftButtonUp="SettingsImage_MouseLeftButtonUp"
+           ToolTip="Cài đặt" Cursor="Hand" RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <ScaleTransform/>
+                </Image.RenderTransform>
+                <Image.Clip>
+                    <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
+                </Image.Clip>
+            </Image>
+
+            <!-- Nút menu 3 gạch -->
+            <Image Source="Assets/Button/setting/more.png"
+           Width="50" Height="50" Margin="5"
+           MouseLeftButtonUp="MenuImage_MouseLeftButtonUp"
+           ToolTip="Menu" Cursor="Hand" RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <ScaleTransform/>
+                </Image.RenderTransform>
+                <Image.Clip>
+                    <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
+                </Image.Clip>
+            </Image>
+        </StackPanel>
+
+        <UniformGrid Rows="3" Columns="5" Margin="83,142,143,40">
+            <StackPanel Margin="0,10,0,0">
+                <Image Source="/Assets/Button/food/1.png" Width="74" Height="62"
+       Cursor="Hand" Tag="1.png|10"
+       MouseLeftButtonUp="BuyFoodImage_Click"/>
+                <TextBlock Text="10 xu"
+               Foreground="White"
+               FontWeight="Bold"
+               FontSize="14"
+               HorizontalAlignment="Center"
+               Margin="0,-2,0,0"/>
+            </StackPanel>
+
+            <StackPanel Margin="0,10,0,0">
+                <Image Source="/Assets/Button/food/2.png" Width="74" Height="62"
+                Cursor="Hand" Tag="2.png|50"
+                MouseLeftButtonUp="BuyFoodImage_Click"/>
+                <TextBlock Text="50 xu"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="14"
+                HorizontalAlignment="Center"
+                Margin="5,-2,0,0"/>
+            </StackPanel>
+
+            <StackPanel Margin="0,10,0,0">
+                <Image Source="/Assets/Button/food/3.png" Width="74" Height="62"
+               Cursor="Hand" Tag="3.png|30"
+            MouseLeftButtonUp="BuyFoodImage_Click"/>
+             <TextBlock Text="30 xu"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="14"
+                HorizontalAlignment="Center"
+                Margin="5,-2,0,0"/>
+            </StackPanel>
+
+            <StackPanel Margin="0,10,0,0">
+                <Image Source="/Assets/Button/food/4.png" Width="74" Height="62"
+               Cursor="Hand" Tag="4.png|30"
+MouseLeftButtonUp="BuyFoodImage_Click"/>
+                <TextBlock Text="30 xu"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="14"
+                HorizontalAlignment="Center"
+                Margin="6,-2,0,0"/>
+            </StackPanel>
+
+            <StackPanel Margin="0,10,0,0">
+                <Image Source="/Assets/Button/food/5.png" Width="74" Height="62"
+                  Cursor="Hand" Tag="5.png|20"
+MouseLeftButtonUp="BuyFoodImage_Click"/>
+                <TextBlock Text="20 xu"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="14"
+                HorizontalAlignment="Center"
+                Margin="10,-1,0,0"/>
+            </StackPanel>
+
+            <StackPanel Margin="0,14,0,0">
+                <Image Source="/Assets/Button/food/6.png" Width="74" Height="62"
+                 Cursor="Hand" Tag="6.png|20"
+MouseLeftButtonUp="BuyFoodImage_Click"/>
+                <TextBlock Text="20 xu"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="14"
+                HorizontalAlignment="Center"
+                Margin="6,-1,0,0"/>
+            </StackPanel>
+
+            <StackPanel Margin="0,17,0,0">
+                <Image Source="/Assets/Button/food/7.png" Width="74" Height="62"
+                 Cursor="Hand" Tag="7.png|30"
+MouseLeftButtonUp="BuyFoodImage_Click"/>
+                <TextBlock Text="30 xu"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="14"
+                HorizontalAlignment="Center"
+                   Margin="7,-4,0,0"/>
+            </StackPanel>
+
+            <StackPanel Margin="0,13,0,0">
+                <Image Source="/Assets/Button/food/8.png" Width="74" Height="62"
+               Cursor="Hand" Tag="8.png|40"
+MouseLeftButtonUp="BuyFoodImage_Click"/>
+                <TextBlock Text="40 xu"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="14"
+                HorizontalAlignment="Center"
+                   Margin="7,0,0,0"/>
+            </StackPanel>
+
+            <StackPanel Margin="0,13,0,0">
+                <Image Source="/Assets/Button/food/9.png" Width="74" Height="62"
+                  Cursor="Hand" Tag="9.png|40"
+MouseLeftButtonUp="BuyFoodImage_Click"/>
+                <TextBlock Text="40 xu"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="14"
+                HorizontalAlignment="Center"
+                   Margin="7,0,0,0"/>
+            </StackPanel>
+
+            <StackPanel Margin="10,15,0,0">
+                <Image Source="/Assets/Button/food/10.png" Width="74" Height="62"
+                 Cursor="Hand" Tag="10.png|30"
+MouseLeftButtonUp="BuyFoodImage_Click"/>
+                <TextBlock Text="30 xu"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="14"
+                HorizontalAlignment="Center"
+                   Margin="5,-1,0,0"/>
+            </StackPanel>
+
+            <!-- Các món ăn còn lại -->
+            <StackPanel Margin="10,20,0,0">
+                <Image Source="/Assets/Button/food/carrot.png" Width="54" Height="62"
+                 Cursor="Hand" Tag="carrot.png|10"
+MouseLeftButtonUp="BuyFoodImage_Click"/>
+                <TextBlock Text="10 xu"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="14"
+                HorizontalAlignment="Center"
+                   Margin="-3,-1,0,0"/>
+            </StackPanel>
+
+            <StackPanel Margin="8,21,0,0">
+                <Image Source="/Assets/Button/food/chese.png" Width="80" Height="62"
+                  Cursor="Hand" Tag="chese.png|30"
+MouseLeftButtonUp="BuyFoodImage_Click"/>
+                <TextBlock Text="30 xu"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="14"
+                HorizontalAlignment="Center"
+                   Margin="5,-1,0,0"/>
+            </StackPanel>
+
+            <StackPanel Margin="8,21,0,0">
+                <Image Source="/Assets/Button/food/donut.png" Width="80" Height="62"
+                 Cursor="Hand" Tag="donut.png|45"
+MouseLeftButtonUp="BuyFoodImage_Click"/>
+                <TextBlock Text="45 xu"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="14"
+                HorizontalAlignment="Center"
+                   Margin="4,-1,0,0"/>
+            </StackPanel>
+
+            <StackPanel Margin="8,21,0,0">
+                <Image Source="/Assets/Button/food/meat.png" Width="80" Height="62"
+                 Cursor="Hand" Tag="meat.png|50"
+MouseLeftButtonUp="BuyFoodImage_Click"/>
+                <TextBlock Text="50 xu"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="14"
+                HorizontalAlignment="Center"
+                   Margin="4,-1,0,0"/>
+            </StackPanel>
+
+            <StackPanel Margin="8,21,0,0">
+                <Image Source="/Assets/Button/food/sandwich.png" Width="80" Height="62"
+                   Cursor="Hand" Tag="sandwich.png|25"
+MouseLeftButtonUp="BuyFoodImage_Click"/>
+                <TextBlock Text="25 xu"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="14"
+                HorizontalAlignment="Center"
+                   Margin="4,-1,0,0"/>
+            </StackPanel>
+        </UniformGrid>
+
+
+        <!-- Lớp phủ Setting -->
+        <settingoverlay:SettingOverlay x:Name="SettingControl" />
+    </Grid>
+</Window>

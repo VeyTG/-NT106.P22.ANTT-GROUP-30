@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using System.Windows.Controls;
-using System.Windows.Media.Animation;
-using System.Windows.Media;
 using System.Xml.Linq;
 using THUAO.Properties;
 
@@ -18,6 +19,7 @@ namespace ThuAo
         public double SleepEnergy { get; set; } = 100;
         public double StudyEnergy { get; set; } = 100;
         public int CoinBalance { get; set; } = 100;
+        public List<string> OwnedFoods { get; set; } = new List<string>();
         public static readonly double MaxEnergy = 100;
     }
 
@@ -97,9 +99,10 @@ namespace ThuAo
         private void StudyImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             AnimateClickEffect(sender as UIElement);
-            new Classroom(gameState).Show();
+            new StudyHub(gameState).Show(); //vào màn hình trung gian StudyHub
             Close();
         }
+
 
         private void SoundImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {

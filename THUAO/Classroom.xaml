@@ -272,6 +272,6 @@ CornerRadius="10" ClipToBounds="True" RenderTransformOrigin="0.573,0.52">
         </Border>
 
         <!-- Lớp phủ Setting -->
-        <settingoverlay:SettingOverlay x:Name="SettingControl" />
+        <settingoverlay:SettingOverlay x:Name="SettingControl" Loaded="SettingControl_Loaded" />
     </Grid>
 </Window>

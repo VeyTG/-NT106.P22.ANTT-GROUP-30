@@ -177,20 +177,23 @@
     </Compile>
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\Session.cs" />
-    <Compile Include="Options.xaml.cs">
-      <DependentUpon>Options.xaml</DependentUpon>
-    </Compile>
     <Compile Include="PlayWindow.xaml.cs">
       <DependentUpon>PlayWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingOverlay.xaml.cs">
       <DependentUpon>SettingOverlay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Shopping.xaml.cs">
+      <DependentUpon>Shopping.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SignUp.xaml.cs">
       <DependentUpon>SignUp.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="StudyHub.xaml.cs">
+      <DependentUpon>StudyHub.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WarningWindow.xaml.cs">
       <DependentUpon>WarningWindow.xaml</DependentUpon>
     </Compile>
@@ -236,10 +239,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Options.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="PlayWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -248,7 +247,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Shopping.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SignUp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StudyHub.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -310,9 +317,24 @@
     <Resource Include="Assets\Bedroom.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\Am_thanh\eat.mp3" />
     <Content Include="Assets\backgroundmusic.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Assets\bg_shopping.png" />
+    <Resource Include="Assets\Button\food\1.png" />
+    <Resource Include="Assets\Button\food\10.png" />
+    <Resource Include="Assets\Button\food\2.png" />
+    <Resource Include="Assets\Button\food\3.png" />
+    <Resource Include="Assets\Button\food\4.png" />
+    <Resource Include="Assets\Button\food\5.png" />
+    <Resource Include="Assets\Button\food\6.png" />
+    <Resource Include="Assets\Button\food\7.png" />
+    <Resource Include="Assets\Button\food\8.png" />
+    <Resource Include="Assets\Button\food\9.png" />
+    <Resource Include="Assets\Button\studyhub\btn_classroom.png" />
+    <Resource Include="Assets\Button\studyhub\btn_shopping.png" />
+    <Resource Include="Assets\StudyHub.png" />
     <Resource Include="Assets\Button\setting\off.png" />
     <Resource Include="Assets\Button\setting\on.png" />
     <Resource Include="Assets\Button\setting\save.png" />

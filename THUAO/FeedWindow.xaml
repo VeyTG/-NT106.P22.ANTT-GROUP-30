@@ -230,9 +230,8 @@
                    Source="Assets/Button/Food/donut.png"
                    Width="100" Height="100"/>
             <TextBlock x:Name="FoodPrice"
-                       Text="10 xu"
-                       FontSize="25" FontWeight="Bold"
-                       TextAlignment="Center"/>
+                       Text=""
+                       Visibility="Collapsed"/>
         </StackPanel>
 
         <!-- Nút chuyển trái -->
@@ -254,6 +253,6 @@
                ToolTip="Tiếp theo" Cursor="Hand"/>
 
         <!-- Lớp phủ Setting -->
-        <settingoverlay:SettingOverlay x:Name="SettingControl"/>
+        <settingoverlay:SettingOverlay x:Name="SettingControl" Loaded="SettingControl_Loaded"/>
     </Grid>
 </Window>
