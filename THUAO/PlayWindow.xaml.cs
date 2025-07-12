@@ -20,6 +20,8 @@ namespace ThuAo
         public double StudyEnergy { get; set; } = 100;
         public int CoinBalance { get; set; } = 100;
         public List<string> OwnedFoods { get; set; } = new List<string>();
+        public HashSet<int> AnsweredQuestionIds { get; set; } = new HashSet<int>();
+
         public static readonly double MaxEnergy = 100;
     }
 
