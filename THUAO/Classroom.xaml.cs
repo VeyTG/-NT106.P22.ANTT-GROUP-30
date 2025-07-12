@@ -69,6 +69,131 @@ namespace ThuAo
                     Options = new List<string> { "Steve Jobs", "Mark Zuckerberg", "Elon Musk", "Bill Gates" },
                     CorrectIndex = 3
                 },
+                new Question
+            {
+                Content = "Trong Vật lý, định luật bảo toàn năng lượng phát biểu điều gì?",
+                Options = new List<string> {
+                    "Năng lượng có thể được tạo ra và mất đi",
+                    "Năng lượng chỉ có thể tăng lên",
+                    "Năng lượng không thể tạo ra hoặc mất đi, chỉ chuyển hóa",
+                    "Năng lượng có thể bị phá hủy trong điều kiện đặc biệt"
+                },
+                CorrectIndex = 2
+            },
+            new Question
+            {
+                Content = "Tác giả của thuyết tương đối nổi tiếng là ai?",
+                Options = new List<string> {
+                    "Isaac Newton", "Albert Einstein", "Stephen Hawking", "Galileo Galilei"
+                },
+                CorrectIndex = 1
+            },
+            new Question
+            {
+                Content = "Tổng góc trong của một đa giác 10 cạnh là bao nhiêu độ?",
+                Options = new List<string> {
+                    "1440", "1620", "1800", "1980"
+                },
+                CorrectIndex = 2
+            },
+            new Question
+            {
+                Content = "Dãy số Fibonacci bắt đầu với 0, 1, tiếp theo là gì?",
+                Options = new List<string> {
+                    "2", "3", "1", "4"
+                },
+                CorrectIndex = 2
+            },
+            new Question
+            {
+                Content = "Ngôn ngữ lập trình nào thường được dùng để xây dựng hệ điều hành?",
+                Options = new List<string> {
+                    "Python", "C", "Java", "Ruby"
+                },
+                CorrectIndex = 1
+            },
+            new Question
+            {
+                Content = "Trong Hóa học, ký hiệu hóa học của Natri là gì?",
+                Options = new List<string> {
+                    "Na", "N", "Ni", "Ns"
+                },
+                CorrectIndex = 0
+            },
+            new Question
+            {
+                Content = "Câu lệnh SQL nào được dùng để xóa bảng khỏi cơ sở dữ liệu?",
+                Options = new List<string> {
+                    "DROP TABLE", "DELETE TABLE", "REMOVE TABLE", "CLEAR TABLE"
+                },
+                CorrectIndex = 0
+            },
+            new Question
+            {
+                Content = "Đơn vị đo cường độ dòng điện là gì?",
+                Options = new List<string> {
+                    "Watt", "Volt", "Ampere", "Ohm"
+                },
+                CorrectIndex = 2
+            },
+            new Question
+            {
+                Content = "Sự kiện nào đánh dấu sự bắt đầu của Thế chiến thứ hai?",
+                Options = new List<string> {
+                    "Nhật tấn công Trân Châu Cảng", "Đức tấn công Ba Lan", "Hiệp định Versailles", "Mỹ tham chiến"
+                },
+                CorrectIndex = 1
+            },
+            new Question
+            {
+                Content = "Kết quả của tích phân ∫₀¹ x² dx là bao nhiêu?",
+                Options = new List<string> {
+                    "1", "1/3", "1/2", "2/3"
+                },
+                CorrectIndex = 1
+            },
+            new Question
+            {
+                Content = "Số nguyên tố lớn nhất nhỏ hơn 100 là bao nhiêu?",
+                Options = new List<string> { "89", "97", "93", "91" },
+                CorrectIndex = 1
+            },
+            new Question
+            {
+                Content = "Trong cấu trúc dữ liệu, thuật toán tìm kiếm nhị phân áp dụng tốt nhất khi nào?",
+                Options = new List<string> {
+                    "Dữ liệu không được sắp xếp", "Dữ liệu có số lượng phần tử nhỏ",
+                    "Dữ liệu đã được sắp xếp", "Dữ liệu là dạng xâu ký tự"
+                },
+                CorrectIndex = 2
+            },
+            new Question
+            {
+                Content = "Từ 'algorithm' bắt nguồn từ tên của nhà toán học nào?",
+                Options = new List<string> {
+                    "Al-Khwarizmi", "Euclid", "Archimedes", "Pythagoras"
+                },
+                CorrectIndex = 0
+            },
+            new Question
+            {
+                Content = "Trong hệ điều hành, deadlock xảy ra khi nào?",
+                Options = new List<string> {
+                    "Các tiến trình chờ tài nguyên không được cấp phát",
+                    "Một tiến trình bị lỗi logic",
+                    "Tất cả tiến trình bị treo do tranh chấp tài nguyên",
+                    "CPU quá tải không xử lý kịp"
+                },
+                CorrectIndex = 2
+            },
+            new Question
+            {
+                Content = "Giá trị của biểu thức logic: (true && false) || (!false && true) là gì?",
+                Options = new List<string> {
+                    "true", "false", "null", "undefined"
+                },
+                CorrectIndex = 0
+            },
             };
         }
 

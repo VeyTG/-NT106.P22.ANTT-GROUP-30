@@ -69,22 +69,43 @@
 
     <Grid>
         <!-- Hình nền -->
-        <Image Source="Assets/START.png" Stretch="Fill" />
+        <Image Source="Assets/welcome.png" Stretch="Fill" />
 
-        <TextBlock Text="Chào mừng bạn đến với thế giới thú ảo!"
-           HorizontalAlignment="Left"
-           VerticalAlignment="Top"
-           Margin="35,113,0,0"
-           FontSize="36"
-           FontWeight="Bold"
-           Foreground="#F2507C"
-           TextWrapping="Wrap" Width="755"/>
- 
+        <Grid Margin="79,80,226,242">
+            <!-- Text viền hồng -->
+            <TextBlock Text="Chào mừng bạn đến với thế giới thú ảo!!!"
+               FontFamily="pack://application:,,,/Assets/Font/#Coolvetica Rg"
+               FontSize="56"
+               FontWeight="Bold"
+               Foreground="#F2507C"
+               TextWrapping="Wrap"
+               Margin="0,0,-26,0">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="#F2507C" BlurRadius="0" ShadowDepth="0" Opacity="1"/>
+                </TextBlock.Effect>
+            </TextBlock>
+
+            <!-- Text trắng ở trên -->
+            <TextBlock Text="Chào mừng bạn đến với thế giới thú ảo!!!"
+               FontFamily="pack://application:,,,/Assets/Font/#Coolvetica Rg"
+               FontSize="56"
+               FontWeight="Bold"
+               Foreground="White"
+               TextWrapping="Wrap"
+               Margin="0,0,-26,0">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="6" ShadowDepth="2" Opacity="0.5"/>
+                </TextBlock.Effect>
+            </TextBlock>
+        </Grid>
+
+
+
         <!-- Nút Play -->
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
-                    Margin="214,0,0,47"
+                    Margin="514,0,0,47"
                     Height="82" Width="186">
             <Button x:Name="PlayButton"
                     Style="{StaticResource PlayButtonStyle}"

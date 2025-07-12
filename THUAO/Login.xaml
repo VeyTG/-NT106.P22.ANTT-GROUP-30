@@ -3,8 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Login" Height="500" Width="800"
         WindowStartupLocation="CenterScreen"
-        Background="#FFF8F1F1"
         ResizeMode="NoResize">
+
+    <Window.Background>
+        <ImageBrush ImageSource="Assets/login.png" Stretch="Fill"/>
+    </Window.Background>
+
 
     <Window.Resources>
         <!-- Hiệu ứng đổ bóng -->
@@ -60,7 +64,7 @@
 
     <Grid>
         <Border Background="#FFEEDDE1" CornerRadius="30"
-                Margin="226,41,226,41" Padding="22"
+                Margin="357,41,95,41" Padding="22"
                 Effect="{DynamicResource DropShadowEffect}">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
 

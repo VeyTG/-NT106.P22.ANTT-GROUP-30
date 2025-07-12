@@ -286,6 +286,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Assets\Font\Coolvetica-Rg.ttf" />
+    <Resource Include="Assets\Font\Vividlyviethoa-Regular.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -317,6 +319,8 @@
     <Resource Include="Assets\Bedroom.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\login.png" />
+    <Resource Include="Assets\welcome.png" />
     <Resource Include="Assets\Am_thanh\eat.mp3" />
     <Content Include="Assets\backgroundmusic.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
